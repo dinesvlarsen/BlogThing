@@ -1,13 +1,11 @@
 ### Brief:
 
 A website where the owner can create blog posts, and users can search and browse for blog posts.
-
 It also has a comment section where people can comment on the different blog posts.
 
 # BlogThingy
 
-This is a blog project made as en exam piece of my frontend development studies.
-
+This is a blog project made as an exam piece of my front-end development studies.
 - The requirements were:
   - Accessibility
   - Interactivity
@@ -16,14 +14,13 @@ This is a blog project made as en exam piece of my frontend development studies.
   - Frameworks
   - API
   - Database
-
-Allows you to create blog posts using Sanity as the CMS. There is also a possibility for users to comment on individual blog posts.
-
-A responsive blog which allows you to create blog posts by using Sanity as the CMS, made with Vue.js, ip-api and REST Countries api.
+  - 
+Allows you to create blog posts using Sanity as the CMS. Users can also comment on individual blog posts.
+A responsive blog that allows you to create blog posts by using Sanity as the CMS, made with Vue.js, IP-API, and REST Countries API.
 
 ## Setup
 
-To set the project up on your own system you first need to install the required packages, which you can do by navigating to the app folder and running:
+To set the project up on your system you first need to install the required packages, which you can do by navigating to the app folder and running:
 
 ```
 npm install
@@ -54,4 +51,4 @@ Once the installation is done you can launch sanity with:
 sanity start
 ```
 
-Once its launched you can navigate to http://localhost:3333 to see the Sanity dashboard.
+Once it's launched you can navigate to http://localhost:3333 to see the Sanity dashboard.
