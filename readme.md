@@ -14,7 +14,7 @@ This is a blog project made as an exam piece of my front-end development studies
   - Frameworks
   - API
   - Database
-  - 
+  
 Allows you to create blog posts using Sanity as the CMS. Users can also comment on individual blog posts.
 A responsive blog that allows you to create blog posts by using Sanity as the CMS, made with Vue.js, IP-API, and REST Countries API.
 
