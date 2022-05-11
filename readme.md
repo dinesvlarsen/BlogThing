@@ -23,19 +23,18 @@ A responsive blog which allows you to create blog posts by using Sanity as the C
 
 ## Setup
 
-To set the project up on your own system you need frist need to install the required packages, which you can do by navigating to the app folder and running:
+To set the project up on your own system you first need to install the required packages, which you can do by navigating to the app folder and running:
 
 ```
 npm install
 ```
 
-once the packages are installed you can launch the application on your local machine by running
+once the packages are installed you can launch the application on your local machine by running:
 
 ```
 npm run dev
 ```
-
-while being in the app directory.
+NB: For npm run dev to work, you always need to launch it from within the app directory.
 
 To use Sanity you also need to have the Sanity CLI installed, which you can install with:
 
