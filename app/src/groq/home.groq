@@ -1,1 +1,15 @@
-*[_type == $documentType]
+*[_type == $blogpost] | order(_createdAt asc){
+  title,
+  slug,
+  date,
+  description,
+  body,
+  coverImage->{
+  alt,
+    image{
+      asset->{
+       url
+      }
+    }
+  }
+}

@@ -1,7 +1,15 @@
 *[slug.current == $slug][0] {
-	...,
-
-	documentation[] {
-		..., asset->{ url }
-	}
+	title,
+  slug,
+  date,
+  description,
+   body,
+  coverImage->{
+  alt,
+    image{
+      asset->{
+       url
+      }
+    }
+  }
 }

@@ -7,7 +7,6 @@ import blogPost from './documents/blogPost.js'
 
 /* types */
 import figure from './types/figure.js'
-import imageCaption from './types/imageCaption.js'
 
 export default createSchema({
 	name: 'default',

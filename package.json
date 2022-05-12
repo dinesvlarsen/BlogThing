@@ -1,6 +1,5 @@
 {
-  //https://github.com/rdunk/sanity-blocks-vue-component
-  "dependencies": {
-    "sanity-blocks-vue-component": "^1.0.1"
-  }
+	"dependencies": {
+		"sanity-blocks-vue-component": "^1.0.1"
+	}
 }

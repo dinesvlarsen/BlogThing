@@ -3,4 +3,9 @@ body {
 	color: var(--foreground);
 	font-size: var(--font-size);
 	font-family: var(--font-family);
+	padding: 0 32px;
+}
+
+p {
+	margin-bottom: 2rem;
 }
