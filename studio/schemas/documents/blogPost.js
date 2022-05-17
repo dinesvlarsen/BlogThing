@@ -48,14 +48,7 @@ export default {
 		{
 			title: 'Body',
 			name: 'body',
-			type: 'array',
-			of: [
-				{ type: 'block' },
-				{
-					title: 'Insert image',
-					type: 'figure'
-				}
-			],
+			type: 'blockContent',
 			validation: Rule => Rule.required(),
 		}
 	]

@@ -1,7 +1,7 @@
 <template>
 	<div v-if="loading">...</div>
-	<pre v-else>result: {{ JSON.stringify(result, null, 3) }}</pre>
 	<div v-else>
+		<pre>{{ result.body }}</pre>
 		<h1>{{ result.title }}</h1>
 
 		<p>{{ result.description }}</p>
@@ -11,12 +11,8 @@
 			:src="result.coverImage.image.asset.url"
 			:alt="result.coverImage.alt"
 		/>
-		<!-- <p v-for="paragraph in result.body">{{ paragraph.children.text }}</p> -->
-		<SanityBlocks :blocks="blocks" />
 
-		<!-- <hr />
-
-		<p v-for="paragraph in blocks">{{ paragraph.children[0].text }}</p> -->
+		<SanityBlocks :blocks="blocks" :serializers="serializers" />
 	</div>
 </template>
 
@@ -24,6 +20,11 @@
 import { SanityBlocks } from 'sanity-blocks-vue-component';
 import query from '../groq/projectPage.groq?raw';
 import viewMixin from '../mixins/viewMixin.js';
+import CustomComponent from '../components/CustomComponent.vue';
+
+const serializers = {
+	types: { custom: CustomComponent },
+};
 
 export default {
 	components: { SanityBlocks },
@@ -33,6 +34,11 @@ export default {
 	data() {
 		return {
 			blocks: [],
+			serializers: {
+				types: {
+					image: CustomComponent,
+				},
+			},
 		};
 	},
 	async created() {
@@ -47,7 +53,7 @@ export default {
 		this.metaTags({
 			title: this.result.title,
 			description: this.result.description,
-			// image: this.result.documentation[0].asset.url,
+			image: this.result.coverImage.image.asset.url,
 		});
 	},
 
