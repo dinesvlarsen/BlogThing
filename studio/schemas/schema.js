@@ -7,12 +7,13 @@ import blogPost from './documents/blogPost.js'
 
 /* types */
 import figure from './types/figure.js'
-import imageCaption from './types/imageCaption.js'
+import blockContent from './types/blockContent.js';
 
 export default createSchema({
 	name: 'default',
 	types: schemaTypes.concat([
 		blogPost,
 		figure,
+		blockContent,
 	]),
 })

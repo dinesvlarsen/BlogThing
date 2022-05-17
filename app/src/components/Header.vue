@@ -1,11 +1,11 @@
 <template>
-	<ul>
-		<li>
-			<router-link to="/">til /</router-link>
-		</li>
-
-		<li>
-			<router-link to="/mike">til /mike</router-link>
-		</li>
-	</ul>
+	<header>
+		<nav>
+			<ul>
+				<RouterLink to="/">
+					<p><b>BlogThing </b></p>
+				</RouterLink>
+			</ul>
+		</nav>
+	</header>
 </template>

@@ -6,7 +6,8 @@ export default {
 		{
 			title: 'Title',
 			name: 'title',
-			type: 'string'
+			type: 'string',
+			validation: Rule => Rule.required(),
 		},
 		{
 			title: 'Slug',
@@ -14,7 +15,8 @@ export default {
 			type: 'slug',
 			options: {
 				source: 'title',
-			}
+			},
+			validation: Rule => Rule.required(),
 		},
 		{
 			title: 'Date',
@@ -29,10 +31,10 @@ export default {
 			title: 'Post Description',
 			name: 'description',
 			type: 'text',
-			description: 'Short description about the blog post (no longer than 200 characters)',
-			validation: Description => [
-				Description.required().min(10).error('A description must be at least 10 characters long'),
-				Description.max(200).error('The description should be less than 200 characters long')
+			description: 'Short description about the blog post (no longer than 300 characters)',
+			validation: Rule => [
+				Rule.required().min(10).error('A description must be at least 10 characters long'),
+				Rule.max(300).error('The description should be less than 200 characters long')
 			]
 
 		},
@@ -41,29 +43,13 @@ export default {
 			name: 'coverImage',
 			type: 'reference',
 			to: [{ type: 'figure' }],
-			validation: Image => Image.required(),
+			validation: Rule => Rule.required(),
 		},
 		{
 			title: 'Body',
 			name: 'body',
-			type: 'array',
-			of: [
-				{ type: 'block' },
-
-				{
-					title: 'Insert cover image',
-					name: 'coverImage',
-					type: 'reference',
-					to: [{ type: 'figure' }],
-				},
-
-				{
-					title: 'Insert image',
-					type: 'figure'
-				}
-
-
-			]
+			type: 'blockContent',
+			validation: Rule => Rule.required(),
 		}
 	]
 }

@@ -9,14 +9,23 @@ export default {
 	},
 
 	methods: {
-		async sanityFetch(query, params) {
-			this.result = await sanity.fetch(query, params);
-			this.loading = false;
+		async sanityFetch(query, params, blocks) {
+			await sanity.fetch(query, params).then((data) => {
+				this.result = data;
+				this.loading = false;
+				blocks = this.result.body
+				//Only want to get blocks if we enter a blog post page.
+				if (params.slug) {
+					this.blocks = this.result.body
+				}
+			});
+
+
 		},
 
 		metaTags(meta) {
 			const currentURL = window.location.origin + this.$route.path;
-			
+
 			if (meta.title) {
 				document.title = meta.title;
 			}

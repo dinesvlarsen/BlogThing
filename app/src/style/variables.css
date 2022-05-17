@@ -1,7 +1,19 @@
 :root {
-	--background: white;
-	--foreground: black;
-	
-	--font-family: "Arial";
-	--font-size: 20px;
+	--primary: hsl(284, 10, 16);
+	--secondary: hsl(0, 0, 51);
+	--background: hsl(0, 0, 99);
+	--comments-background: hsl(0, 1, 97);
+	--accent: hsl(284, 90, 45);
+
+	--font-family: 'Inter', sans-serif;
+	--font-size: 16px;
+
+	/* Dark mode colors */
+	/* 
+	--primary: hsl(0, 0, 99);
+	--background: hsl(284, 10, 16);
+	--secondary: hsl(0, 0, 76);
+	--comments-secondary: hsl(0, 0, 89);
+	--comments-background: hsl(284, 6, 22);
+	*/
 }

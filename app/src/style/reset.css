@@ -4,7 +4,9 @@
 	padding: 0;
 }
 
-button, input, table {
+button,
+input,
+table {
 	font: inherit;
 	background: transparent;
 	border: none;
@@ -15,5 +17,7 @@ button {
 }
 
 img {
+	display: block;
 	width: 100%;
+	height: auto;
 }
