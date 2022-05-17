@@ -1,12 +1,13 @@
 <template>
-	<img :src="image" alt="Decorative image" />
+	<div>
+		<img v-if="asset.url" :src="asset.url" alt="Decorative image" />
+	</div>
 </template>
 
 <script>
 export default {
-	props: ['image'],
-	created() {
-		console.log(this.image);
-	},
+	props: ['asset'],
+
+	created() {},
 };
 </script>

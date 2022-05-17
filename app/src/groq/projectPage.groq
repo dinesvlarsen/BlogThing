@@ -5,9 +5,9 @@
   description,
   body[]{
     ...,
-    _type == "image" => {
-      "image":asset->url
-    },
+    _type == 'image' => {
+    asset-> {url}
+  }
   },
   coverImage->{
   alt,
