@@ -1,7 +1,6 @@
 <template>
 	<div v-if="loading">...</div>
 	<div v-else>
-		<pre>{{ result.body }}</pre>
 		<h1>{{ result.title }}</h1>
 
 		<p>{{ result.description }}</p>
@@ -20,11 +19,7 @@
 import { SanityBlocks } from 'sanity-blocks-vue-component';
 import query from '../groq/projectPage.groq?raw';
 import viewMixin from '../mixins/viewMixin.js';
-import CustomComponent from '../components/CustomComponent.vue';
-
-const serializers = {
-	types: { custom: CustomComponent },
-};
+import CustomComponent from '../components/PostBodyImages.vue';
 
 export default {
 	components: { SanityBlocks },
@@ -41,6 +36,7 @@ export default {
 			},
 		};
 	},
+
 	async created() {
 		await this.sanityFetch(
 			query,

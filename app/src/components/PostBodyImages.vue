@@ -1,6 +1,5 @@
 <template>
-	<img :src="image" alt="" />
-	<div>THIS IS COMPONENT</div>
+	<img :src="image" alt="Decorative image" />
 </template>
 
 <script>
