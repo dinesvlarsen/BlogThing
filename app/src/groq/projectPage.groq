@@ -5,9 +5,12 @@
   description,
   body[]{
     ...,
-    _type == 'image' => {
-    asset-> {url}
-  }
+    _type == 'figure' => {
+    alt,
+      image{
+        asset-> {url}
+      }
+    }
   },
   coverImage->{
   alt,

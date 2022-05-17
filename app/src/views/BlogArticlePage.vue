@@ -17,9 +17,9 @@
 
 <script>
 import { SanityBlocks } from 'sanity-blocks-vue-component';
+import BlockImages from '../components/BlockImages.vue';
 import query from '../groq/projectPage.groq?raw';
 import viewMixin from '../mixins/viewMixin.js';
-import CustomComponent from '../components/PostBodyImages.vue';
 
 export default {
 	components: { SanityBlocks },
@@ -31,7 +31,7 @@ export default {
 			blocks: [],
 			serializers: {
 				types: {
-					image: CustomComponent,
+					figure: BlockImages,
 				},
 			},
 		};
