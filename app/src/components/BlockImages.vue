@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<img :src="image.asset.url" :alt="alt" />
-		<p>{{ alt }}</p>
+		<img v-if="alt" :src="image.asset.url" :alt="alt" />
+		<img v-else :src="image.asset.url" alt="" />
 	</div>
 </template>
 
