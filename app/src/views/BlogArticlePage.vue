@@ -1,6 +1,7 @@
 <template>
 	<div v-if="loading">...</div>
 	<div v-else>
+		<CommentSection />
 		<h1>{{ result.title }}</h1>
 
 		<p>{{ result.description }}</p>
@@ -18,11 +19,13 @@
 <script>
 import { SanityBlocks } from 'sanity-blocks-vue-component';
 import BlockImages from '../components/BlockImages.vue';
+import CommentSection from '../components/CommentSection.vue';
+
 import query from '../groq/projectPage.groq?raw';
 import viewMixin from '../mixins/viewMixin.js';
 
 export default {
-	components: { SanityBlocks },
+	components: { SanityBlocks, CommentSection },
 
 	mixins: [viewMixin],
 
