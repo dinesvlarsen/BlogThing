@@ -1,25 +1,27 @@
 <template>
-	<form
-		id="form"
-		@submit.prevent="submit"
-		method="post"
-		action="https://sanity.io"
-	>
-		<input
-			type="text"
-			name="name"
-			placeholder="Your name"
-			v-model="form.name"
-		/>
-		<textarea name="text" v-model="form.textArea"></textarea>
-		<button type="submit">submit</button>
-	</form>
-
-	<div>
-		<div v-for="comment in localComments" :key="comment._id">
-			<h2>{{ comment.name }}</h2>
-			<hr />
-			<p>{{ comment.text }}</p>
+	<div v-if="loading">loading...</div>
+	<div v-else>
+		<form
+			id="form"
+			@submit.prevent="submit"
+			method="post"
+			action="https://sanity.io"
+		>
+			<input
+				type="text"
+				name="name"
+				placeholder="Your name"
+				v-model="form.name"
+			/>
+			<textarea name="text" v-model="form.textArea"></textarea>
+			<button type="submit">submit</button>
+		</form>
+		<div>
+			<div v-for="comment in localComments.comments" :key="comment._id">
+				<h2>{{ comment.name }}</h2>
+				<hr />
+				<p>{{ comment.text }}</p>
+			</div>
 		</div>
 	</div>
 	<hr />
@@ -30,14 +32,17 @@ import sanity from './../sanity.js';
 import commentsQuery from './../groq/comments.groq?raw';
 
 export default {
-	props: ['id', 'comments'],
+	props: ['id'],
 	mounted() {
 		//Doing this because I need my prop to be mutable, solution taken from https://stackoverflow.com/questions/69225771/are-the-props-in-a-vue-component-mutable.
 		//Might have to refactor this approach and move the query for comments into store, or query for the data needed in this component directly inside it, instead of passing the data down from BlogArticlePage.vue.
-		this.localComments = [...this.comments];
+		// this.localComments = [...this.comments];
+		this.queryForComments();
+		console.log(this.localComments);
 	},
-	created() {
+	async created() {
 		// console.log(this.$route.params.projectSlug);
+		// this.queryForComments();
 	},
 	data() {
 		return {
@@ -47,6 +52,7 @@ export default {
 				id: this.id,
 			},
 			localComments: [],
+			loading: true,
 		};
 	},
 	methods: {
@@ -73,6 +79,7 @@ export default {
 					slug: this.$route.params.projectSlug,
 				})
 				.then((data) => {
+					console.log('this is fetch');
 					console.log(data);
 					this.localComments = data;
 					this.loading = false;
