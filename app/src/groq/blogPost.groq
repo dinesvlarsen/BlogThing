@@ -1,0 +1,29 @@
+*[slug.current == $slug][0] {
+  _id,
+	title,
+  slug,
+  date,
+  description,
+  body[]{
+    ...,
+    _type == 'figure' => {
+    alt,
+      image{
+        asset-> {url}
+      }
+    }
+  },
+  coverImage->{
+  alt,
+    image{
+      asset->{
+       url
+      }
+    }
+  },
+  "comments": *[_type == "comment" && post._ref == ^._id] | order(_createdAt desc) {
+    _createdAt,
+    name,
+    text,
+  }
+}
