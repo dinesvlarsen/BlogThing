@@ -15,7 +15,8 @@ export default {
 			title: 'Alternative text',
 			name: 'alt',
 			type: 'string',
-			description: 'Write what is on the image'
+			description: 'Write what is on the image',
+			initialValue: ''
 		}
 	]
 }

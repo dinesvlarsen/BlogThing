@@ -3,6 +3,7 @@ import schemaTypes from 'all:part:@sanity/base/schema-type'
 
 /* documents */
 import blogPost from './documents/blogPost.js'
+import comment from './documents/comment.js'
 
 
 /* types */
@@ -15,5 +16,6 @@ export default createSchema({
 		blogPost,
 		figure,
 		blockContent,
+		comment
 	]),
 })

@@ -1,11 +1,11 @@
 import Home from './views/Home.vue';
-import BlogArticlePage from './views/BlogArticlePage.vue';
+import BlogPost from './views/BlogPost.vue';
 
 export default [
 	{
-		name: 'blogArticlePage',
+		name: 'blogpost',
 		path: '/:projectSlug',
-		component: BlogArticlePage
+		component: BlogPost
 	},
 	{
 		name: 'home',
