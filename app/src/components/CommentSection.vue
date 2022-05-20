@@ -37,12 +37,10 @@ export default {
 		//Doing this because I need my prop to be mutable, solution taken from https://stackoverflow.com/questions/69225771/are-the-props-in-a-vue-component-mutable.
 		//Might have to refactor this approach and move the query for comments into store, or query for the data needed in this component directly inside it, instead of passing the data down from BlogArticlePage.vue.
 		// this.localComments = [...this.comments];
-		this.queryForComments();
-		console.log(this.localComments);
+		// this.queryForComments();
 	},
 	async created() {
-		// console.log(this.$route.params.projectSlug);
-		// this.queryForComments();
+		this.queryForComments();
 	},
 	data() {
 		return {
@@ -57,12 +55,10 @@ export default {
 	},
 	methods: {
 		submit() {
-			// console.log('form made?');
 			this.createComment(this.form);
 			this.queryForComments();
 		},
 		createComment({ name, textArea }) {
-			// console.log(name, textArea);
 			sanity.create({
 				_type: 'comment',
 				name: this.form.name,
@@ -79,8 +75,6 @@ export default {
 					slug: this.$route.params.projectSlug,
 				})
 				.then((data) => {
-					console.log('this is fetch');
-					console.log(data);
 					this.localComments = data;
 					this.loading = false;
 					// blocks = this.result.body;
