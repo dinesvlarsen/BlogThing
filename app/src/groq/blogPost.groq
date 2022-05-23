@@ -21,9 +21,4 @@
       }
     }
   },
-  "comments": *[_type == "comment" && post._ref == ^._id] | order(_createdAt desc) {
-    _createdAt,
-    name,
-    text,
-  }
 }
