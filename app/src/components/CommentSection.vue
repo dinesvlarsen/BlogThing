@@ -1,6 +1,5 @@
 <template>
-	<div v-if="loading">loading...</div>
-	<div v-else>
+	<div>
 		<form
 			id="form"
 			@submit.prevent="submit"
@@ -16,15 +15,22 @@
 			<textarea name="text" v-model="form.textArea"></textarea>
 			<button type="submit">submit</button>
 		</form>
-		<div>
-			<div v-for="comment in localComments.comments" :key="comment._id">
+
+		<div v-if="localComments.length === 0">There Are No Comments!</div>
+		<div v-else>
+			<div v-for="comment in computedObj" :key="comment._id">
+				<span :aria-label="comment.country">{{
+					getFlag(comment.country)
+				}}</span>
 				<h2>{{ comment.name }}</h2>
 				<hr />
 				<p>{{ comment.text }}</p>
 			</div>
+			<button v-if="!noMoreComments" @click="showMoreComments">
+				Show more
+			</button>
 		</div>
 	</div>
-	<hr />
 </template>
 
 <script>
@@ -33,60 +39,100 @@ import commentsQuery from './../groq/comments.groq?raw';
 
 export default {
 	props: ['id'],
-	mounted() {
-		//Doing this because I need my prop to be mutable, solution taken from https://stackoverflow.com/questions/69225771/are-the-props-in-a-vue-component-mutable.
-		//Might have to refactor this approach and move the query for comments into store, or query for the data needed in this component directly inside it, instead of passing the data down from BlogArticlePage.vue.
-		// this.localComments = [...this.comments];
-		// this.queryForComments();
-	},
-	async created() {
+
+	created() {
 		this.queryForComments();
+		this.getCountry();
+		this.getRestCountries();
 	},
+
 	data() {
 		return {
+			restCountries: [],
+			countryLoading: true,
 			form: {
 				name: '',
+				country: '',
 				textArea: '',
-				id: this.id,
 			},
+
 			localComments: [],
+			limit: 5,
+
 			loading: true,
+			componentKey: 0,
 		};
 	},
-	methods: {
-		submit() {
-			this.createComment(this.form);
-			this.queryForComments();
+
+	computed: {
+		//Used to calculate how many comments are going to be shown. Solution found here: https://stackoverflow.com/questions/46622209/how-to-limit-iteration-of-elements-in-v-for
+		computedObj() {
+			return this.limit ? this.localComments.slice(0, this.limit) : this.object;
 		},
-		createComment({ name, textArea }) {
-			sanity.create({
+
+		//Used to check if there are no comments on the page, so the proper message can be displayed.
+		noMoreComments() {
+			return this.localComments.length < this.limit;
+		},
+	},
+
+	methods: {
+		async submit() {
+			await this.createComment(this.form);
+			await this.queryForComments();
+		},
+
+		async createComment() {
+			await sanity.create({
 				_type: 'comment',
 				name: this.form.name,
 				text: this.form.textArea,
+				country: this.form.country,
 				post: {
 					_type: 'reference',
-					_ref: this.form.id,
+					_ref: this.id,
 				},
 			});
 		},
+		
 		async queryForComments() {
 			await sanity
 				.fetch(commentsQuery, {
 					slug: this.$route.params.projectSlug,
 				})
 				.then((data) => {
-					this.localComments = data;
+					//Spreads the data from the response into the localComments, so we get an array, instead of an object with an array.
+					this.localComments = [...data.comments];
 					this.loading = false;
-					// blocks = this.result.body;
-					// //Only want to get blocks if we enter a blog post page.
-					// if (params.slug) {
-					// 	this.blocks = this.result.body;
-					// 	this.id = this.result._id;
-					// }
 				});
 		},
+
+		async getCountry() {
+			await fetch('http://ip-api.com/json/?fields=status,message,country')
+				.then((response) => response.json())
+				.then((data) => (this.form.country = data.country));
+		},
+
+		async getRestCountries() {
+			await fetch('https://restcountries.com/v3.1/all')
+				.then((response) => response.json())
+				.then((data) => (this.restCountries = data));
+		},
+
+		getFlag(countryName) {
+			const countryObject = this.restCountries.find((object) => {
+				return object.name.common === countryName;
+			});
+			if (!countryObject) return 'Country not given';
+			this.countryLoading = false;
+			return countryObject.flag;
+		},
+
+		//Increases the property used to determine how many comments are displayed.
+		showMoreComments() {
+			this.limit += 5;
+		},
 	},
-	computed: {},
 };
 </script>
 
@@ -96,6 +142,7 @@ input {
 	padding: 0.5rem;
 	border-radius: 4px;
 }
+
 input + input {
 	margin-top: 8px;
 }
