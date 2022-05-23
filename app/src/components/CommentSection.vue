@@ -17,12 +17,17 @@
 		</form>
 
 		<div>
-			<div v-for="comment in localComments" :key="comment._id">
-				<span>{{ getFlag(comment.country) }}</span>
+			<div v-for="comment in computedObj" :key="comment._id">
+				<span :aria-label="comment.country">{{
+					getFlag(comment.country)
+				}}</span>
 				<h2>{{ comment.name }}</h2>
 				<hr />
 				<p>{{ comment.text }}</p>
 			</div>
+			<button v-if="amountOfComments" @click="showMoreComments">
+				Show more
+			</button>
 		</div>
 	</div>
 	<hr />
@@ -33,13 +38,13 @@ import sanity from './../sanity.js';
 import commentsQuery from './../groq/comments.groq?raw';
 
 export default {
+	props: ['id'],
+
 	created() {
 		this.queryForComments();
 		this.getCountry();
 		this.getRestCountries();
 	},
-
-	props: ['id'],
 
 	data() {
 		return {
@@ -50,10 +55,23 @@ export default {
 				country: '',
 				textArea: '',
 			},
+
 			localComments: [],
+			limit: 5,
+
 			loading: true,
 			componentKey: 0,
 		};
+	},
+
+	computed: {
+		computedObj() {
+			return this.limit ? this.localComments.slice(0, this.limit) : this.object;
+		},
+
+		amountOfComments() {
+			return this.localComments.length > this.limit;
+		},
 	},
 
 	methods: {
@@ -107,6 +125,11 @@ export default {
 			this.countryLoading = false;
 			return countryObject.flag;
 		},
+
+		//Increases the property used to determine how many comments are displayed.
+		showMoreComments() {
+			this.limit += 5;
+		},
 	},
 };
 </script>
@@ -117,6 +140,7 @@ input {
 	padding: 0.5rem;
 	border-radius: 4px;
 }
+
 input + input {
 	margin-top: 8px;
 }
