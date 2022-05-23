@@ -7,12 +7,18 @@ export default {
 			name: 'name',
 			type: 'string',
 			title: 'Name',
-			// readOnly: true,
+			readOnly: true,
+		},
+		{
+			name: 'country',
+			type: 'string',
+			title: 'Country',
+			readOnly: true,
 		},
 		{
 			name: 'text',
 			type: 'text',
-			// readOnly: true,
+			readOnly: true,
 		},
 		{
 			name: 'post',

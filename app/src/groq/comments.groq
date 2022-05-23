@@ -3,6 +3,7 @@
     _id,
     _createdAt,
     name,
+    country,
     text,
   }
 }

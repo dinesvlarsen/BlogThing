@@ -1,7 +1,6 @@
 <template>
 	<div v-if="loading">...</div>
 	<div v-else>
-		<CommentSection :id="this.result._id" />
 		<h1>{{ result.title }}</h1>
 
 		<p>{{ result.description }}</p>
@@ -13,6 +12,8 @@
 		/>
 
 		<SanityBlocks :blocks="blocks" :serializers="serializers" />
+
+		<CommentSection :id="this.result._id" />
 	</div>
 </template>
 
