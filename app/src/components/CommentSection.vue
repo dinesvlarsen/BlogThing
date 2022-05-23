@@ -65,10 +65,12 @@ export default {
 	},
 
 	computed: {
+		//Used to calculate how many comments are going to be shown. Solution found here: https://stackoverflow.com/questions/46622209/how-to-limit-iteration-of-elements-in-v-for
 		computedObj() {
 			return this.limit ? this.localComments.slice(0, this.limit) : this.object;
 		},
 
+		//Used to check if there are no comments on the page, so the proper message can be displayed.
 		noMoreComments() {
 			return this.localComments.length < this.limit;
 		},
@@ -92,7 +94,7 @@ export default {
 				},
 			});
 		},
-
+		
 		async queryForComments() {
 			await sanity
 				.fetch(commentsQuery, {
