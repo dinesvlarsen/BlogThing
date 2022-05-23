@@ -16,7 +16,8 @@
 			<button type="submit">submit</button>
 		</form>
 
-		<div>
+		<div v-if="localComments.length === 0">There Are No Comments!</div>
+		<div v-else>
 			<div v-for="comment in computedObj" :key="comment._id">
 				<span :aria-label="comment.country">{{
 					getFlag(comment.country)
@@ -25,12 +26,11 @@
 				<hr />
 				<p>{{ comment.text }}</p>
 			</div>
-			<button v-if="amountOfComments" @click="showMoreComments">
+			<button v-if="!noMoreComments" @click="showMoreComments">
 				Show more
 			</button>
 		</div>
 	</div>
-	<hr />
 </template>
 
 <script>
@@ -69,8 +69,8 @@ export default {
 			return this.limit ? this.localComments.slice(0, this.limit) : this.object;
 		},
 
-		amountOfComments() {
-			return this.localComments.length > this.limit;
+		noMoreComments() {
+			return this.localComments.length < this.limit;
 		},
 	},
 
