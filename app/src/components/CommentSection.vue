@@ -94,7 +94,7 @@ export default {
 				},
 			});
 		},
-		
+
 		async queryForComments() {
 			await sanity
 				.fetch(commentsQuery, {
@@ -103,14 +103,14 @@ export default {
 				.then((data) => {
 					//Spreads the data from the response into the localComments, so we get an array, instead of an object with an array.
 					this.localComments = [...data.comments];
-					this.loading = false;
 				});
 		},
 
 		async getCountry() {
 			await fetch('http://ip-api.com/json/?fields=status,message,country')
 				.then((response) => response.json())
-				.then((data) => (this.form.country = data.country));
+				.then((data) => (this.form.country = data.country))
+				.catch((e) => console.error(e));
 		},
 
 		async getRestCountries() {
