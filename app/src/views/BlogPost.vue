@@ -13,6 +13,8 @@
 
 		<SanityBlocks :blocks="blocks" :serializers="serializers" />
 
+		<LatestArticles />
+
 		<CommentSection :id="this.result._id" />
 	</div>
 </template>
@@ -21,12 +23,13 @@
 import { SanityBlocks } from 'sanity-blocks-vue-component';
 import BlockImages from '../components/BlockImages.vue';
 import CommentSection from '../components/CommentSection.vue';
+import LatestArticles from '../components/LatestArticles.vue';
 
 import query from '../groq/blogPost.groq?raw';
 import viewMixin from '../mixins/viewMixin.js';
 
 export default {
-	components: { SanityBlocks, CommentSection },
+	components: { SanityBlocks, CommentSection, LatestArticles },
 
 	mixins: [viewMixin],
 
