@@ -43,6 +43,30 @@ export default {
 			},
 		};
 	},
+	async beforeRouteUpdate(to, from, next) {
+		await this.sanityFetch(
+			query,
+			{
+				slug: to.params.projectSlug,
+			},
+			this.blocks
+		);
+		next();
+		// console.log(next);
+	},
+	// beforeRouteUpdate(to, from, next) {
+	// 	console.log(to.params.slug.current);
+	// 	console.log(from);
+	// 	console.log(next);
+	// 	this.sanityFetch(
+	// 		query,
+	// 		{
+	// 			slug: to.params.slug.current,
+	// 		},
+	// 		this.blocks
+	// 	);
+	// 	next();
+	// },
 
 	async created() {
 		await this.sanityFetch(

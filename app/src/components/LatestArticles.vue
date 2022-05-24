@@ -1,10 +1,15 @@
 <template>
 	<div>
 		<div v-for="article in articles" :key="article._id">
-			<img :src="article.coverImage.image.asset.url" alt="" />
-			<RouterLink :to="article.slug.current">
-				<h2>{{ article.title }}</h2>
-			</RouterLink>
+			<img
+				:src="article.coverImage.image.asset.url"
+				:alt="article.coverImage.alt"
+			/>
+			<router-link :to="article.slug.current">
+				<h2>router link</h2>
+			</router-link>
+			<!-- Need to change these to router-link, but couldn't figure out what was causing the router-link to not work -->
+			<a :href="article.slug.current">{{ article.title }}</a>
 		</div>
 	</div>
 </template>
@@ -18,6 +23,14 @@ export default {
 	created() {
 		this.latestArticlesQuery();
 	},
+
+	async beforeRouteUpdate(to, from, next) {
+		console.log(to);
+		console.log(from);
+		this.latestArticlesQuery();
+		next();
+		// console.log(next);
+	},
 	data() {
 		return {
 			articles: [],
@@ -26,10 +39,12 @@ export default {
 
 	methods: {
 		async latestArticlesQuery() {
-			await sanity.fetch(latestArticles, {}).then((data) => {
-				//Spreads the data from the response into the localComments, so we get an array, instead of an object with an array.
-				this.articles = data;
-			});
+			await sanity
+				.fetch(latestArticles, { slug: this.$route.params.projectSlug })
+				.then((data) => {
+					//Spreads the data from the response into the localComments, so we get an array, instead of an object with an array.
+					this.articles = data;
+				});
 		},
 	},
 };
