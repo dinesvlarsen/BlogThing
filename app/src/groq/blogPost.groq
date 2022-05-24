@@ -21,4 +21,18 @@
       }
     }
   },
+  
+  "articles": *[_type == "blogpost"  && slug.current != $slug]| order(_createdAt desc)[0..3]{
+	title,
+	_id,
+	slug,
+	coverImage->{
+   	alt,
+		image{
+   		asset->{
+				url
+			}
+		}
+	},
+  }
 }
