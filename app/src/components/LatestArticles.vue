@@ -5,7 +5,7 @@
 				:src="article.coverImage.image.asset.url"
 				:alt="article.coverImage.alt"
 			/>
-			<router-link :to="article.slug.current">
+			<router-link @click="scrollToTop" :to="article.slug.current">
 				<h2>router link</h2>
 			</router-link>
 			<!-- Need to change these to router-link, but couldn't figure out what was causing the router-link to not work -->
@@ -45,6 +45,10 @@ export default {
 					//Spreads the data from the response into the localComments, so we get an array, instead of an object with an array.
 					this.articles = data;
 				});
+		},
+
+		scrollToTop() {
+			window.scrollTo(0, 0);
 		},
 	},
 };
