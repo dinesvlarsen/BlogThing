@@ -13,7 +13,7 @@
 
 		<SanityBlocks :blocks="blocks" :serializers="serializers" />
 
-		<LatestArticles />
+		<LatestArticles :articles="result.articles" />
 
 		<CommentSection :id="this.result._id" />
 	</div>
@@ -41,6 +41,7 @@ export default {
 					figure: BlockImages,
 				},
 			},
+			loading: true,
 		};
 	},
 	async beforeRouteUpdate(to, from, next) {
