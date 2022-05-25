@@ -1,6 +1,6 @@
 body {
 	background: var(--background);
-	color: var(--foreground);
+	color: var(--primary);
 	font-size: var(--font-size);
 	font-family: var(--font-family);
 	padding: 0 32px;
