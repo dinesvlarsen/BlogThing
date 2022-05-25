@@ -1,8 +1,11 @@
 :root {
 	--primary: #2c262e;
-	--secondary: #828282;
+	--secondary: #6c6a6a;
 	--background: #fcfcfc;
 	--comments-background: #f7f6f6;
+	--comments-secondary: #4f4f4f;
+
+	--line-height: 26px;
 	/* For some reason this color displays as blue if I use HSL but fine if I use rgb */
 	--accent: #c557f4;
 	--font-family: 'Inter', sans-serif;
@@ -16,15 +19,21 @@
 	--comments-background: hsl(284, 6, 22);
 	*/
 
-	/* Vertical spacings */
+	/* Vertical spacings & font sizes */
 	--4px: 0.25rem;
 	--8px: 0.5rem;
 	--12px: 0.75rem;
 	--14px: 0.875rem;
 	--16px: 1rem;
+	--18px: 1, 125rem;
+	--20px: 1.25rem;
 	--24px: 1.5rem;
+	--30px: 1.875rem;
 	--32px: 2rem;
+	--36px: 2.25rem;
 	--48px: 3rem;
 	--64px: 4rem;
 	--96px: 6rem;
+	--128px: 8rem;
+	--192px: 12rem;
 }

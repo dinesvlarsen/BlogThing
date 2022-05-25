@@ -28,9 +28,34 @@
 </template>
 
 <style>
+.post__intro > *:not(img),
+.post__main > *:not(div) {
+	margin-left: 32px;
+	margin-right: 32px;
+}
 .post__heading {
-	font-size: 2.25rem;
-	margin-bottom: 16px;
+	font-size: var(--36px);
+	margin-bottom: var(--16px);
+}
+
+.post__description {
+	font-size: var(--20px);
+	margin-bottom: var(--16px);
+	line-height: var(--line-height);
+}
+
+.post__image {
+	margin-bottom: var(--32px);
+}
+
+.post__main p:not(p:last-child),
+.post__main img {
+	margin-bottom: var(--32px);
+}
+
+.post__main p {
+	font-size: var(--18px);
+	line-height: var(--line-height);
 }
 </style>
 
@@ -61,7 +86,7 @@ export default {
 			loadingDots: '',
 		};
 	},
-	async beforeRouteUpdate(to, from, next) {
+	async beforeRouteUpdate(to, _, next) {
 		this.loading = true;
 		await this.sanityFetch(
 			query,
@@ -95,6 +120,8 @@ export default {
 			description: this.result.description,
 			image: this.result.coverImage.image.asset.url,
 		});
+
+		this.scrollToTop();
 	},
 
 	computed: {
