@@ -2,25 +2,37 @@
 	<Loading v-if="loading" />
 
 	<div v-else>
-		<h1>{{ result.title }}</h1>
+		<section class="post__intro">
+			<h1 class="post__heading">{{ result.title }}</h1>
+			<p class="post__description">{{ result.description }}</p>
+			<img
+				class="post__image"
+				loading="lazy"
+				:src="result.coverImage.image.asset.url"
+				:alt="result.coverImage.alt"
+			/>
+		</section>
 
-		<p>{{ result.description }}</p>
+		<main class="post__main">
+			<SanityBlocks :blocks="blocks" :serializers="serializers" />
+		</main>
 
-		<img
-			loading="lazy"
-			:src="result.coverImage.image.asset.url"
-			:alt="result.coverImage.alt"
-		/>
+		<section>
+			<LatestArticles :articles="result.articles" />
+		</section>
 
-		<SanityBlocks :blocks="blocks" :serializers="serializers" />
-
-		<LatestArticles :articles="result.articles" />
-
-		<CommentSection :id="this.result._id" />
+		<section>
+			<CommentSection :id="this.result._id" />
+		</section>
 	</div>
 </template>
 
-<style></style>
+<style>
+.post__heading {
+	font-size: 2.25rem;
+	margin-bottom: 16px;
+}
+</style>
 
 <script>
 import { SanityBlocks } from 'sanity-blocks-vue-component';
