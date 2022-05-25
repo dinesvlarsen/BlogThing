@@ -1,6 +1,6 @@
 <template>
-	<div v-if="loading">...</div>
-	<div v-else v-for="post in result">
+	<Loading v-if="loading" />
+	<div v-else="loading" v-for="post in result">
 		<img :src="this.imageURL(post)" :alt="post.coverImage.alt" />
 		<h1>{{ post.title }}</h1>
 		<time :datetime="post.date">{{ post.date }}</time>
@@ -12,8 +12,10 @@
 <script>
 import query from '../groq/home.groq?raw';
 import viewMixin from '../mixins/viewMixin.js';
+import Loading from '../components/Loading.vue';
 
 export default {
+	components: { Loading },
 	mixins: [viewMixin],
 
 	async created() {

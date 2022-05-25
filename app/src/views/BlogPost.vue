@@ -1,5 +1,6 @@
 <template>
-	<div v-if="loading">...</div>
+	<Loading v-if="loading" />
+
 	<div v-else>
 		<h1>{{ result.title }}</h1>
 
@@ -19,17 +20,20 @@
 	</div>
 </template>
 
+<style></style>
+
 <script>
 import { SanityBlocks } from 'sanity-blocks-vue-component';
 import BlockImages from '../components/BlockImages.vue';
 import CommentSection from '../components/CommentSection.vue';
 import LatestArticles from '../components/LatestArticles.vue';
+import Loading from '../components/Loading.vue';
 
 import query from '../groq/blogPost.groq?raw';
 import viewMixin from '../mixins/viewMixin.js';
 
 export default {
-	components: { SanityBlocks, CommentSection, LatestArticles },
+	components: { SanityBlocks, CommentSection, LatestArticles, Loading },
 
 	mixins: [viewMixin],
 
@@ -42,9 +46,11 @@ export default {
 				},
 			},
 			loading: true,
+			loadingDots: '',
 		};
 	},
 	async beforeRouteUpdate(to, from, next) {
+		this.loading = true;
 		await this.sanityFetch(
 			query,
 			{
@@ -52,22 +58,16 @@ export default {
 			},
 			this.blocks
 		);
+
+		this.metaTags({
+			title: this.result.title,
+			description: this.result.description,
+			image: this.result.coverImage.image.asset.url,
+		});
+
+		this.scrollToTop();
 		next();
-		// console.log(next);
 	},
-	// beforeRouteUpdate(to, from, next) {
-	// 	console.log(to.params.slug.current);
-	// 	console.log(from);
-	// 	console.log(next);
-	// 	this.sanityFetch(
-	// 		query,
-	// 		{
-	// 			slug: to.params.slug.current,
-	// 		},
-	// 		this.blocks
-	// 	);
-	// 	next();
-	// },
 
 	async created() {
 		await this.sanityFetch(
@@ -88,6 +88,12 @@ export default {
 	computed: {
 		sanityData() {
 			return this.$store.state.sanityData;
+		},
+	},
+
+	methods: {
+		scrollToTop() {
+			window.scrollTo(0, 0);
 		},
 	},
 };
