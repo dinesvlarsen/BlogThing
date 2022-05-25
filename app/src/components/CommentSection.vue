@@ -1,37 +1,109 @@
 <template>
-	<div>
-		<form
-			id="form"
-			@submit.prevent="submit"
-			method="post"
-			action="https://sanity.io"
-		>
-			<input
-				type="text"
-				name="name"
-				placeholder="Your name"
-				v-model="form.name"
-			/>
-			<textarea name="text" v-model="form.textArea"></textarea>
-			<button type="submit">submit</button>
-		</form>
+	<section class="comments">
+		<h4 class="comments__heading">-Comments</h4>
 
-		<div v-if="localComments.length === 0">There Are No Comments!</div>
-		<div v-else>
-			<div v-for="comment in computedObj" :key="comment._id">
-				<span :aria-label="comment.country">{{
-					getFlag(comment.country)
-				}}</span>
-				<h2>{{ comment.name }}</h2>
-				<hr />
-				<p>{{ comment.text }}</p>
+		<div class="comments__comments" v-if="localComments.length === 0">
+			<p class="comments--secondary comments--bold">No comments...</p>
+		</div>
+
+		<div class="comments__comments" v-else>
+			<div class="comment" v-for="comment in computedObj" :key="comment._id">
+				<div class="comment__country-info">
+					<span :aria-label="comment.country">{{
+						getFlag(comment.country)
+					}}</span>
+
+					<span class="comment__country"> {{ comment.country }}</span>
+				</div>
+
+				<span class="comment__name" aria-label="Comment name">
+					{{ comment.name }} wrote - {{ formatDate(comment._createdAt) }}
+				</span>
+				<p class="comment__text" aria-label="Comment text">
+					{{ comment.text }}
+				</p>
 			</div>
 			<button v-if="!noMoreComments" @click="showMoreComments">
 				Show more
 			</button>
 		</div>
-	</div>
+
+		<form class="form" id="form" @submit.prevent="submit">
+			<label for="text">Your message:</label>
+			<textarea name="text" v-model="form.textArea" required></textarea>
+
+			<label for="name">Your name:</label>
+			<input
+				type="text"
+				name="name"
+				placeholder="Your name"
+				v-model="form.name"
+				required
+			/>
+			<button type="submit">submit</button>
+		</form>
+	</section>
 </template>
+
+<style scoped>
+/* Comments section */
+.comments {
+	margin-top: var(--128px);
+	margin-left: 32px;
+	margin-right: 32px;
+	border-top: solid 4px #e2e2e2;
+}
+
+.comments__heading {
+	margin: var(--64px) 0 var(--24px) 0;
+	font-size: var(--30px);
+}
+
+.comments__comments {
+	margin-bottom: var(--32px);
+	background-color: var(--comments-background);
+	padding: var(--16px);
+	border-radius: 2px;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+}
+
+.comment__country-info {
+	margin-bottom: var(--8px);
+}
+
+.comment__country {
+	margin-left: 4px;
+	font-size: var(--14px);
+	color: var(--comments-secondary);
+}
+
+.comment__name {
+	display: inline-block;
+	margin-bottom: var(--16px);
+	font-weight: bold;
+}
+
+.comment__text {
+	margin-bottom: var(--16px);
+}
+
+.comments--secondary {
+	color: var(--comments-secondary);
+}
+
+.comments--bold {
+	font-weight: bold;
+}
+
+/* Form section */
+.form {
+	margin-bottom: 192px;
+	display: flex;
+	flex-direction: column;
+	background-color: var(--comments-background);
+	padding: var(--16px);
+}
+</style>
 
 <script>
 import sanity from './../sanity.js';
@@ -44,6 +116,7 @@ export default {
 		this.queryForComments();
 		this.getCountry();
 		this.getRestCountries();
+		this.formatDate();
 	},
 
 	data() {
@@ -77,6 +150,27 @@ export default {
 	},
 
 	methods: {
+		formatDate(date) {
+			// Found this method on https://stackoverflow.com/questions/1431094/how-do-i-replace-a-character-at-a-particular-index-in-javascript since there is no replaceAt() function.
+			function setCharAt(str, index, chr) {
+				if (index > str.length - 1) return str;
+				return str.substring(0, index) + chr + str.substring(index + 1);
+			}
+			const options = {
+				month: 'long',
+				day: 'numeric',
+				year: 'numeric',
+				hour: 'numeric',
+				hourCycle: 'h24',
+				minute: 'numeric',
+			};
+			const dateConvert = new Date(date);
+			const newDate = dateConvert.toLocaleString('en-US', options);
+
+			return setCharAt(newDate, newDate.lastIndexOf(','), '');
+			return dateConvert.toLocaleString('en-US', options);
+		},
+
 		async submit() {
 			await this.createComment(this.form);
 			await this.queryForComments();
@@ -135,30 +229,3 @@ export default {
 	},
 };
 </script>
-
-<style scoped>
-input {
-	border: 1px solid lightcoral;
-	padding: 0.5rem;
-	border-radius: 4px;
-}
-
-input + input {
-	margin-top: 8px;
-}
-
-form textarea {
-	width: 270px;
-	min-height: 100px;
-	margin-top: 8px;
-}
-
-button {
-	background: black;
-	color: white;
-	padding: 0.5em;
-	border-radius: 4px;
-	margin-top: 8px;
-	margin-bottom: 16px;
-}
-</style>
