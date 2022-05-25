@@ -1,55 +1,55 @@
 <template>
 	<Loading v-if="loading" />
 
-	<main class="post" v-else="loading" v-for="post in result">
+	<main class="home" v-else="loading" v-for="post in result">
 		<img
-			class="post__image"
+			class="home__image"
 			:src="this.imageURL(post)"
 			:alt="post.coverImage.alt"
 		/>
-		<h1 class="post__header">{{ post.title }}</h1>
-		<time class="post__time" :datetime="post.date">{{ post.date }}</time>
-		<p class="post__description">{{ post.description }}</p>
-		<RouterLink class="post__link" :to="post.slug.current">more -></RouterLink>
+		<h1 class="home__header">{{ post.title }}</h1>
+		<time class="home__time" :datetime="post.date">{{ post.date }}</time>
+		<p class="home__description">{{ post.description }}</p>
+		<RouterLink class="home__link" :to="post.slug.current">more -></RouterLink>
 	</main>
 </template>
 
 <style>
-.post > *:not(img) {
+.home > *:not(img) {
 	margin-left: 32px;
 	margin-right: 32px;
 }
 
-.post {
-	margin-bottom: 6rem;
+.home {
+	margin-bottom: var(--96px);
 }
 
-.post__image,
-.post__description {
-	margin-bottom: 24px;
+.home__image,
+.home__description {
+	margin-bottom: var(--24px);
 }
 
-.post__header {
-	margin-bottom: 4px;
-	font-size: 1.5rem;
+.home__header {
+	margin-bottom: var(--4px);
+	font-size: var(--24px);
 }
 
-.post__time {
+.home__time {
 	display: inline-block;
-	margin-bottom: 16px;
+	margin-bottom: var(--16px);
 	color: var(--secondary);
-	font-size: 0.875rem;
+	font-size: var(--14px);
 }
 
-.post__link {
-	color: var(--secondary);
-}
-
-.post__link:visited {
+.home__link {
 	color: var(--secondary);
 }
 
-.post__link:active {
+.home__link:visited {
+	color: var(--secondary);
+}
+
+.home__link:active {
 	color: var(--accent);
 	text-decoration: underline;
 }
