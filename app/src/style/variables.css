@@ -1,9 +1,10 @@
 :root {
-	--primary: hsl(284, 10, 16);
-	--secondary: hsl(0, 0, 51);
-	--background: hsl(0, 0, 99);
-	--comments-background: hsl(0, 1, 97);
-	--accent: hsl(284, 90, 45);
+	--primary: #2c262e;
+	--secondary: #828282;
+	--background: #fcfcfc;
+	--comments-background: #f7f6f6;
+	/* For some reason this color displays as blue if I use HSL but fine if I use rgb */
+	--accent: #c557f4;
 	--font-family: 'Inter', sans-serif;
 
 	/* Dark mode colors */
