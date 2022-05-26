@@ -3,7 +3,7 @@
 	--secondary: #6c6a6a;
 	--background: #fcfcfc;
 	--comments-background: #f7f6f6;
-	--comments-secondary: #4f4f4f;
+	--comments-secondary: #707070;
 
 	--line-height: 26px;
 	/* For some reason this color displays as blue if I use HSL but fine if I use rgb */
