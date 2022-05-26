@@ -2,20 +2,25 @@
 	<Loading v-if="loading" />
 
 	<main class="home" v-else="loading" v-for="post in result">
-		<img
-			class="home__image"
-			:src="this.imageURL(post)"
-			:alt="post.coverImage.alt"
-		/>
-		<h1 class="home__header">{{ post.title }}</h1>
-		<time class="home__time" :datetime="post.date">{{ post.date }}</time>
-		<p class="home__description">{{ post.description }}</p>
+		<RouterLink :to="post.slug.current">
+			<div class="home--spacing">
+				<img
+					class="home__image"
+					:src="this.imageURL(post)"
+					:alt="post.coverImage.alt"
+				/>
+				<h1 class="home__header">{{ post.title }}</h1>
+				<time class="home__time" :datetime="post.date">{{ post.date }}</time>
+				<p class="home__description">{{ post.description }}</p>
+			</div>
+		</RouterLink>
 		<RouterLink class="home__link" :to="post.slug.current">more -></RouterLink>
 	</main>
 </template>
 
 <style>
-.home > *:not(img) {
+.home--spacing > *:not(img),
+.home__link {
 	margin-left: 32px;
 	margin-right: 32px;
 }
@@ -39,10 +44,12 @@
 	margin-bottom: var(--16px);
 	color: var(--secondary);
 	font-size: var(--14px);
+	font-weight: medium;
 }
 
 .home__link {
 	color: var(--secondary);
+	font-weight: medium;
 }
 
 .home__link:visited {
