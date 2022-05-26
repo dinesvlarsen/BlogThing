@@ -4,7 +4,7 @@
 			-Comments<span class="comments__count">{{ commentsCount }}</span>
 		</h4>
 
-		<div class="comments__comments" v-if="localComments.length === 0">
+		<div class="comment" v-if="localComments.length === 0">
 			<p class="comments--secondary comments--bold">No comments...</p>
 		</div>
 
@@ -33,20 +33,26 @@
 			</button>
 		</div>
 
-		<div>
-			<h4>Leave a comment</h4>
+		<div class="form-section">
+			<h4 class="form-section__heading">Leave a comment</h4>
 			<form class="form" id="form" @submit.prevent="submit">
-				<label for="text">Your message:</label>
-				<textarea name="text" v-model="form.textArea" required></textarea>
-				<label for="name">Your name:</label>
+				<label class="form__textarea-label" for="text">Your message:</label>
+				<textarea
+					class="form__textarea"
+					name="text"
+					v-model="form.textArea"
+					required
+				></textarea>
+				<label class="form__name-label" for="name">Your name:</label>
 				<input
+					class="form__name"
 					type="text"
 					name="name"
 					placeholder="Your name"
 					v-model="form.name"
 					required
 				/>
-				<button type="submit">submit</button>
+				<button class="form__button" type="submit">submit</button>
 			</form>
 		</div>
 	</section>
@@ -68,8 +74,9 @@
 }
 
 .comments__count {
-	position: absolute;
+	position: relative;
 	bottom: 13px;
+	left: 4px;
 	font-size: var(--24px);
 	color: var(--comments-secondary);
 }
@@ -119,12 +126,34 @@
 }
 
 /* Form section */
+.form-section__heading {
+	margin-bottom: var(--24px);
+	font-size: var(--24px);
+	font-style: italic;
+}
+
+.form label {
+	font-weight: 500;
+}
+
 .form {
 	margin-bottom: 192px;
 	display: flex;
 	flex-direction: column;
 	background-color: var(--comments-background);
 	padding: var(--16px);
+}
+
+.form__textarea-label {
+	margin-bottom: var(--8px);
+}
+
+.form__textarea {
+	min-height: 8.625rem;
+	border-radius: 2px;
+	box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.1);
+	padding: var(--8px);
+	font-size: var(--14px);
 }
 </style>
 
@@ -133,19 +162,17 @@ import sanity from './../sanity.js';
 import commentsQuery from './../groq/comments.groq?raw';
 
 export default {
-	props: ['id'],
+	props: ['id', 'restCountries'],
 
 	created() {
 		this.queryForComments();
 		this.getCountry();
-		this.getRestCountries();
 		this.formatDate();
+		console.log();
 	},
 
 	data() {
 		return {
-			restCountries: [],
-			countryLoading: true,
 			form: {
 				name: '',
 				country: '',
@@ -158,22 +185,6 @@ export default {
 			loading: true,
 			componentKey: 0,
 		};
-	},
-
-	computed: {
-		//Used to calculate how many comments are going to be shown. Solution found here: https://stackoverflow.com/questions/46622209/how-to-limit-iteration-of-elements-in-v-for
-		computedObj() {
-			return this.limit ? this.localComments.slice(0, this.limit) : this.object;
-		},
-
-		//Used to check if there are no comments on the page, so the proper message can be displayed.
-		noMoreComments() {
-			return this.localComments.length < this.limit;
-		},
-
-		commentsCount() {
-			return this.localComments.length;
-		},
 	},
 
 	methods: {
@@ -235,12 +246,6 @@ export default {
 				.catch((e) => console.error(e));
 		},
 
-		async getRestCountries() {
-			await fetch('https://restcountries.com/v3.1/all')
-				.then((response) => response.json())
-				.then((data) => (this.restCountries = data));
-		},
-
 		getFlag(countryName) {
 			const countryObject = this.restCountries.find((object) => {
 				return object.name.common === countryName;
@@ -253,6 +258,22 @@ export default {
 		//Increases the property used to determine how many comments are displayed.
 		showMoreComments() {
 			this.limit += 5;
+		},
+	},
+
+	computed: {
+		//Used to calculate how many comments are going to be shown. Solution found here: https://stackoverflow.com/questions/46622209/how-to-limit-iteration-of-elements-in-v-for
+		computedObj() {
+			return this.limit ? this.localComments.slice(0, this.limit) : this.object;
+		},
+
+		//Used to check if there are no comments on the page, so the proper message can be displayed.
+		noMoreComments() {
+			return this.localComments.length < this.limit;
+		},
+
+		commentsCount() {
+			return this.localComments.length;
 		},
 	},
 };
