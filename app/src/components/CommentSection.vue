@@ -1,12 +1,14 @@
 <template>
 	<section class="comments">
-		<h4 class="comments__heading">-Comments</h4>
+		<h4 class="comments__heading">
+			-Comments<span class="comments__count">{{ commentsCount }}</span>
+		</h4>
 
 		<div class="comments__comments" v-if="localComments.length === 0">
 			<p class="comments--secondary comments--bold">No comments...</p>
 		</div>
 
-		<div class="comments__comments" v-else>
+		<div v-else>
 			<div class="comment" v-for="comment in computedObj" :key="comment._id">
 				<div class="comment__country-info">
 					<span :aria-label="comment.country">{{
@@ -16,9 +18,12 @@
 					<span class="comment__country"> {{ comment.country }}</span>
 				</div>
 
-				<span class="comment__name" aria-label="Comment name">
-					{{ comment.name }} wrote - {{ formatDate(comment._createdAt) }}
-				</span>
+				<h4 class="comment__name" aria-label="Comment name">
+					{{ comment.name }}
+					<span class="comment__name--secondary"
+						>wrote - {{ formatDate(comment._createdAt) }}</span
+					>
+				</h4>
 				<p class="comment__text" aria-label="Comment text">
 					{{ comment.text }}
 				</p>
@@ -28,20 +33,22 @@
 			</button>
 		</div>
 
-		<form class="form" id="form" @submit.prevent="submit">
-			<label for="text">Your message:</label>
-			<textarea name="text" v-model="form.textArea" required></textarea>
-
-			<label for="name">Your name:</label>
-			<input
-				type="text"
-				name="name"
-				placeholder="Your name"
-				v-model="form.name"
-				required
-			/>
-			<button type="submit">submit</button>
-		</form>
+		<div>
+			<h4>Leave a comment</h4>
+			<form class="form" id="form" @submit.prevent="submit">
+				<label for="text">Your message:</label>
+				<textarea name="text" v-model="form.textArea" required></textarea>
+				<label for="name">Your name:</label>
+				<input
+					type="text"
+					name="name"
+					placeholder="Your name"
+					v-model="form.name"
+					required
+				/>
+				<button type="submit">submit</button>
+			</form>
+		</div>
 	</section>
 </template>
 
@@ -55,16 +62,28 @@
 }
 
 .comments__heading {
+	position: relative;
 	margin: var(--64px) 0 var(--24px) 0;
 	font-size: var(--30px);
 }
 
-.comments__comments {
+.comments__count {
+	position: absolute;
+	bottom: 13px;
+	font-size: var(--24px);
+	color: var(--comments-secondary);
+}
+
+.comment:last-child {
+	margin-bottom: 48px;
+}
+
+.comment {
 	margin-bottom: var(--32px);
 	background-color: var(--comments-background);
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
 	padding: var(--16px);
 	border-radius: 2px;
-	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
 }
 
 .comment__country-info {
@@ -81,6 +100,10 @@
 	display: inline-block;
 	margin-bottom: var(--16px);
 	font-weight: bold;
+}
+
+.comment__name--secondary {
+	color: var(--comments-secondary);
 }
 
 .comment__text {
@@ -147,6 +170,10 @@ export default {
 		noMoreComments() {
 			return this.localComments.length < this.limit;
 		},
+
+		commentsCount() {
+			return this.localComments.length;
+		},
 	},
 
 	methods: {
@@ -156,6 +183,7 @@ export default {
 				if (index > str.length - 1) return str;
 				return str.substring(0, index) + chr + str.substring(index + 1);
 			}
+
 			const options = {
 				month: 'long',
 				day: 'numeric',
@@ -164,11 +192,11 @@ export default {
 				hourCycle: 'h24',
 				minute: 'numeric',
 			};
+
 			const dateConvert = new Date(date);
 			const newDate = dateConvert.toLocaleString('en-US', options);
 
 			return setCharAt(newDate, newDate.lastIndexOf(','), '');
-			return dateConvert.toLocaleString('en-US', options);
 		},
 
 		async submit() {
