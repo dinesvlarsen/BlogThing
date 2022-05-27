@@ -24,7 +24,10 @@ img {
 
 a {
 	text-decoration: none;
+	color: var(--primary);
 }
+
+
 
 a:visited {
 	color: var(--primary);
@@ -38,4 +41,10 @@ textarea {
 input:focus,
 textarea:focus {
 	outline: none;
+}
+
+textarea {
+	font-family: var(--font-family);
+	resize: none;
+	overflow: hidden;
 }

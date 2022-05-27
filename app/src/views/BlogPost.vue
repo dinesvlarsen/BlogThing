@@ -5,6 +5,7 @@
 		<section class="post__intro">
 			<h1 class="post__heading">{{ result.title }}</h1>
 			<p class="post__description">{{ result.description }}</p>
+			<time class="post__time" :datetime="result.date">{{ result.date }}</time>
 			<img
 				class="post__image"
 				loading="lazy"
@@ -22,7 +23,7 @@
 		</section>
 
 		<section>
-			<CommentSection :id="this.result._id" />
+			<CommentSection :id="this.result._id" :restCountries="restCountries" />
 		</section>
 	</div>
 </template>
@@ -42,6 +43,14 @@
 	font-size: var(--20px);
 	margin-bottom: var(--16px);
 	line-height: var(--line-height);
+}
+
+.post__time {
+	display: block;
+	margin-bottom: var(--48px);
+	font-size: var(--14px);
+	font-weight: 500;
+	color: var(--secondary);
 }
 
 .post__image {
@@ -84,8 +93,10 @@ export default {
 			},
 			loading: true,
 			loadingDots: '',
+			restCountries: [],
 		};
 	},
+
 	async beforeRouteUpdate(to, _, next) {
 		this.loading = true;
 		await this.sanityFetch(
@@ -121,6 +132,8 @@ export default {
 			image: this.result.coverImage.image.asset.url,
 		});
 
+		this.getRestCountries();
+
 		this.scrollToTop();
 	},
 
@@ -133,6 +146,13 @@ export default {
 	methods: {
 		scrollToTop() {
 			window.scrollTo(0, 0);
+		},
+
+		async getRestCountries() {
+			console.log('query for countries from parent component');
+			await fetch('https://restcountries.com/v3.1/all')
+				.then((response) => response.json())
+				.then((data) => (this.restCountries = data));
 		},
 	},
 };
