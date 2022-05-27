@@ -10,7 +10,9 @@
 					:alt="post.coverImage.alt"
 				/>
 				<h1 class="home__header">{{ post.title }}</h1>
-				<time class="home__time" :datetime="post.date">{{ post.date }}</time>
+				<time class="home__time" :datetime="formatDate(post.date)">{{
+					formatDate(post.date)
+				}}</time>
 				<p class="home__description">{{ post.description }}</p>
 			</div>
 		</RouterLink>
@@ -44,12 +46,12 @@
 	margin-bottom: var(--16px);
 	color: var(--secondary);
 	font-size: var(--14px);
-	font-weight: medium;
+	font-weight: 500;
 }
 
 .home__link {
 	color: var(--secondary);
-	font-weight: medium;
+	font-weight: 500;
 }
 
 .home__link:visited {
@@ -82,14 +84,26 @@ export default {
 	},
 
 	methods: {
+		formattedDate(value) {
+			this.$store.dispatch('formatDate', value);
+
+			const date = this.$store.getters.date;
+			return date;
+		},
+		//Takes in a date, which we use to generate a date object with new Date(). Which we convert to a language sensitive string ('en-US') with the specified options.
+		//toLocalString documentation: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
+		formatDate(date) {
+			const options = {
+				month: 'long',
+				day: 'numeric',
+				year: 'numeric',
+			};
+
+			return new Date(date).toLocaleString('en-US', options);
+		},
+
 		imageURL(post) {
 			return post.coverImage.image.asset.url;
-		},
-	},
-
-	computed: {
-		sanityData() {
-			return this.$store.state.sanityData;
 		},
 	},
 };

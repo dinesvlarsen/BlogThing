@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import { createStore } from 'vuex';
-import { createRouter, createWebHistory, routerKey } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 
 import App from './App.vue';
 

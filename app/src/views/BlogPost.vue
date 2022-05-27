@@ -5,7 +5,9 @@
 		<section class="post__intro">
 			<h1 class="post__heading">{{ result.title }}</h1>
 			<p class="post__description">{{ result.description }}</p>
-			<time class="post__time" :datetime="result.date">{{ result.date }}</time>
+			<time class="post__time" :datetime="formattedDate">{{
+				formattedDate
+			}}</time>
 			<img
 				class="post__image"
 				loading="lazy"
@@ -107,27 +109,6 @@ export default {
 		};
 	},
 
-	async beforeRouteUpdate(to, _, next) {
-		this.loading = true;
-		await this.sanityFetch(
-			query,
-			{
-				slug: to.params.projectSlug,
-			},
-			this.blocks
-		);
-
-		this.metaTags({
-			title: this.result.title,
-			description: this.result.description,
-			image: this.result.coverImage.image.asset.url,
-		});
-
-		this.queryForComments(to.params.projectSlug);
-		this.scrollToTop();
-		next();
-	},
-
 	async created() {
 		await this.sanityFetch(
 			query,
@@ -149,13 +130,40 @@ export default {
 		this.scrollToTop();
 	},
 
-	computed: {
-		sanityData() {
-			return this.$store.state.sanityData;
-		},
+	async beforeRouteUpdate(to, _, next) {
+		this.loading = true;
+		await this.sanityFetch(
+			query,
+			{
+				slug: to.params.projectSlug,
+			},
+			this.blocks
+		);
+
+		this.metaTags({
+			title: this.result.title,
+			description: this.result.description,
+			image: this.result.coverImage.image.asset.url,
+		});
+
+		this.queryForComments(to.params.projectSlug);
+		this.scrollToTop();
+		next();
 	},
 
 	methods: {
+		//Takes in a date, which we use to generate a date object with new Date(). Which we convert to a language sensitive string ('en-US') with the specified options.
+		//toLocalString documentation: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
+		formatDate(date) {
+			const options = {
+				month: 'long',
+				day: 'numeric',
+				year: 'numeric',
+			};
+
+			return new Date(date).toLocaleString('en-US', options);
+		},
+
 		scrollToTop() {
 			window.scrollTo(0, 0);
 		},
@@ -184,6 +192,12 @@ export default {
 				.catch((e) =>
 					console.error(e + ' : Might be ad block blocking the api')
 				);
+		},
+	},
+
+	computed: {
+		formattedDate() {
+			return this.formatDate(this.result.date);
 		},
 	},
 };
