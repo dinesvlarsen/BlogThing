@@ -23,7 +23,13 @@
 		</section>
 
 		<section>
-			<CommentSection :id="this.result._id" :restCountries="restCountries" />
+			<CommentSection
+				:id="this.result._id"
+				:restCountries="restCountries"
+				:country="country"
+				:comments="comments"
+				:queryForComments="queryForComments"
+			/>
 		</section>
 	</div>
 </template>
@@ -76,6 +82,8 @@ import LatestArticles from '../components/LatestArticles.vue';
 import Loading from '../components/Loading.vue';
 
 import query from '../groq/blogPost.groq?raw';
+import commentsQuery from './../groq/comments.groq?raw';
+import sanity from './../sanity';
 import viewMixin from '../mixins/viewMixin.js';
 
 export default {
@@ -94,6 +102,8 @@ export default {
 			loading: true,
 			loadingDots: '',
 			restCountries: [],
+			country: '',
+			comments: [],
 		};
 	},
 
@@ -113,6 +123,7 @@ export default {
 			image: this.result.coverImage.image.asset.url,
 		});
 
+		this.queryForComments(to.params.projectSlug);
 		this.scrollToTop();
 		next();
 	},
@@ -132,8 +143,9 @@ export default {
 			image: this.result.coverImage.image.asset.url,
 		});
 
+		this.getCountry();
 		this.getRestCountries();
-
+		this.queryForComments(this.$route.params.projectSlug);
 		this.scrollToTop();
 	},
 
@@ -149,10 +161,29 @@ export default {
 		},
 
 		async getRestCountries() {
-			console.log('query for countries from parent component');
 			await fetch('https://restcountries.com/v3.1/all')
 				.then((response) => response.json())
 				.then((data) => (this.restCountries = data));
+		},
+
+		async queryForComments(to) {
+			await sanity
+				.fetch(commentsQuery, {
+					slug: to,
+				})
+				.then((data) => {
+					//Spreads the data from the response into the localComments, so we get an array, instead of an object with an array.
+					this.comments = [...data.comments];
+				});
+		},
+
+		async getCountry() {
+			await fetch('http://ip-api.com/json/?fields=status,message,country')
+				.then((response) => response.json())
+				.then((data) => (this.country = data.country))
+				.catch((e) =>
+					console.error(e + ' : Might be ad block blocking the api')
+				);
 		},
 	},
 };
