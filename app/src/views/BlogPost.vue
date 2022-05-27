@@ -149,7 +149,6 @@ export default {
 		},
 
 		async getRestCountries() {
-			console.log('query for countries from parent component');
 			await fetch('https://restcountries.com/v3.1/all')
 				.then((response) => response.json())
 				.then((data) => (this.restCountries = data));
