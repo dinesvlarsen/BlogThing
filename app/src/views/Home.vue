@@ -67,16 +67,16 @@
 	font-weight: 500;
 }
 
-.home__link:visited {
-	color: var(--secondary);
-}
-
 .home__link:active {
 	color: var(--accent);
 	text-decoration: underline;
 }
 
 @media screen and (min-width: 50rem) {
+	.home:last-child {
+		margin-bottom: var(--256px);
+	}
+
 	.home {
 		display: flex;
 		max-width: 800px;
