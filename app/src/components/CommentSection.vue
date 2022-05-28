@@ -9,7 +9,11 @@
 		</div>
 
 		<div v-else>
-			<div class="comment" v-for="comment in computedList" :key="comment._id">
+			<div
+				class="comment fade-in"
+				v-for="comment in computedList"
+				:key="comment._id"
+			>
 				<div class="comment__country-info">
 					<span :aria-label="comment.country">{{
 						getFlag(comment.country)
@@ -36,30 +40,42 @@
 		<div class="form-section">
 			<h4 class="form-section__heading">Leave a comment</h4>
 
+			<p class="form-section__description">
+				Fields with an asteriks(*) are mandatory.
+			</p>
+
 			<form class="form" id="form" @submit.prevent="submitComment">
-				<label class="form__textarea-label" for="text">Your message:</label>
+				<label class="form__textarea-label" for="text">Message *</label>
 				<textarea
 					class="form__textarea"
 					name="text"
 					v-model="form.textArea"
 					required
 				></textarea>
-				<label class="form__name-label" for="name">Your name:</label>
+				<label class="form__name-label" for="name">Name *</label>
 				<input
 					class="form__name"
 					type="text"
 					name="name"
-					placeholder="Your name"
 					v-model="form.name"
 					required
 				/>
-				<button class="form__button" type="submit">Submit</button>
+				<span class="accent-hover">
+					<button class="form__button arrow--animation-parent" type="submit">
+						Submit
+						<span class="arrow--animation-child">-></span>
+					</button>
+				</span>
 			</form>
 		</div>
 	</section>
 </template>
 
 <style scoped>
+.form, .comment {
+	max-width: 384px;
+
+}
 /* Comments section */
 .comments {
 	margin-top: var(--128px);
@@ -83,7 +99,7 @@
 }
 
 .comment:last-child {
-	margin-bottom: 48px;
+	margin-bottom: var(--96px);
 }
 
 .comment {
@@ -133,28 +149,58 @@
 	font-style: italic;
 }
 
+.form-section__description {
+	margin-bottom: var(--8px);
+}
+
 .form label {
 	font-weight: 500;
 }
 
+.form input:focus,
+textarea:focus {
+	border: 1px solid rgba(211, 211, 211, 0.87);
+	box-shadow: none;
+}
+
 .form {
+	max-width: 384px;
 	margin-bottom: 192px;
 	display: flex;
 	flex-direction: column;
 	background-color: var(--comments-background);
-	padding: var(--16px);
+	padding: var(--16px) var(--16px) 0 var(--16px);
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
 }
 
-.form__textarea-label {
+.form__textarea-label,
+.form__name-label {
 	margin-bottom: var(--8px);
 }
 
-.form__textarea {
-	min-height: 8.625rem;
-	border-radius: 2px;
+.form__textarea,
+.form__name {
+	background-color: #fcfcfc;
 	box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.1);
-	padding: var(--8px);
 	font-size: var(--14px);
+	padding: var(--8px);
+	border-radius: 2px;
+}
+
+.form__textarea {
+	margin-bottom: var(--24px);
+	min-height: 8.625rem;
+}
+
+.form__name {
+	margin-bottom: var(--32px);
+}
+
+.form__button {
+	margin-bottom: var(--32px);
+	align-self: flex-start;
+	text-transform: uppercase;
+	font-weight: 500;
 }
 </style>
 
@@ -223,25 +269,6 @@ export default {
 			});
 		},
 
-		// async queryForComments(to) {
-		// 	console.log(this.$route.params.projectSlug);
-		// 		await sanity
-		// 			.fetch(commentsQuery, {
-		// 				slug: this.$route.params.projectSlug,
-		// 			})
-		// 			.then((data) => {
-		// 				//Spreads the data from the response into the localComments, so we get an array, instead of an object with an array.
-		// 				this.localComments = [...data.comments];
-		// 			});
-		// },
-
-		// async getCountry() {
-		// 	await fetch('http://ip-api.com/json/?fields=status,message,country')
-		// 		.then((response) => response.json())
-		// 		.then((data) => (this.form.country = data.country))
-		// 		.catch((e) => console.error(e));
-		// },
-
 		getFlag(countryName) {
 			const countryObject = this.restCountries.find((object) => {
 				return object.name.common === countryName;
@@ -254,14 +281,6 @@ export default {
 		//Increases the property used to determine how many comments are displayed.
 		showMoreComments() {
 			this.limit += 5;
-		},
-	},
-
-	watch: {
-		$route(to, from) {
-			// console.log(to);
-			// this.queryForComments(to);
-			// console.log(from);
 		},
 	},
 
