@@ -2,33 +2,46 @@
 	<Loading v-if="loading" />
 
 	<main class="home" v-else="loading" v-for="post in result">
-		<RouterLink :to="post.slug.current">
-			<div class="home--spacing">
+		<div class="home__left">
+			<RouterLink :to="post.slug.current">
 				<img
 					class="home__image"
 					:src="this.imageURL(post)"
 					:alt="post.coverImage.alt"
 				/>
-				<h1 class="home__header">{{ post.title }}</h1>
+			</RouterLink>
+		</div>
+
+		<div class="home__right">
+			<RouterLink class="home__right--height" :to="post.slug.current">
+				<span class="accent-hover">
+					<h1 class="home__header">{{ post.title }}</h1>
+				</span>
 				<time class="home__time" :datetime="formatDate(post.date)">{{
 					formatDate(post.date)
 				}}</time>
 				<p class="home__description">{{ post.description }}</p>
-			</div>
-		</RouterLink>
-		<RouterLink class="home__link" :to="post.slug.current">more -></RouterLink>
+			</RouterLink>
+
+			<span class="accent-hover">
+				<RouterLink
+					class="home__link arrow--animation-parent"
+					:to="post.slug.current"
+					>more <span class="arrow--animation-child">-></span></RouterLink
+				>
+			</span>
+		</div>
 	</main>
 </template>
 
 <style>
-.home--spacing > *:not(img),
-.home__link {
-	margin-left: 32px;
-	margin-right: 32px;
-}
-
 .home {
 	margin-bottom: var(--96px);
+}
+
+.home__right {
+	margin-left: 32px;
+	margin-right: 32px;
 }
 
 .home__image,
@@ -61,6 +74,46 @@
 .home__link:active {
 	color: var(--accent);
 	text-decoration: underline;
+}
+
+@media screen and (min-width: 50rem) {
+	.home {
+		display: flex;
+		max-width: 800px;
+	}
+
+	.home__right {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		margin-left: var(--24px);
+		margin-right: 0;
+	}
+
+	.home__right--height {
+		flex-grow: 1;
+	}
+
+	.home__image {
+		margin-bottom: 0;
+	}
+
+	.home__header {
+		margin-bottom: 0;
+	}
+
+	.home__description {
+		margin-bottom: 0;
+	}
+
+	.home__time {
+		margin-bottom: var(--32px);
+	}
+
+	.home__link {
+		/* margin-top: 50px; */
+		justify-self: flex-end;
+	}
 }
 </style>
 
