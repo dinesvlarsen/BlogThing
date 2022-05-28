@@ -30,6 +30,7 @@
 		font-size: 24px;
 		justify-content: flex-start;
 		margin-bottom: var(--128px);
+		
 	}
 }
 </style>

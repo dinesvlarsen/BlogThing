@@ -43,8 +43,8 @@
 	margin-right: 32px;
 }
 .post__heading {
-	font-size: var(--36px);
 	margin-bottom: var(--16px);
+	font-size: var(--36px);
 }
 
 .post__description {
@@ -73,6 +73,37 @@
 .post__main p {
 	font-size: var(--18px);
 	line-height: var(--line-height);
+}
+
+@media screen and (min-width: 50rem) {
+	.post__intro > *:not(img),
+	.post__main > *:not(div) {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+	.post__main,
+	.post__intro {
+		max-width: 800px;
+	}
+
+	.post__heading {
+		margin-bottom: var(--24px);
+		font-size: var(--48px);
+	}
+
+	.post__description {
+		font-size: var(--24px);
+		line-height: var(--30px);
+	}
+
+	.post__time {
+		font-size: var(--16px);
+	}
+
+	.post__main p {
+		font-size: var(--20px);
+		line-height: var(--30px);
+	}
 }
 </style>
 

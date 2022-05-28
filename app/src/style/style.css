@@ -60,3 +60,15 @@ p {
 		opacity: 1;
 	}
 }
+
+@media screen and (min-width: 50rem) {
+	body {
+		padding-left: 10%;
+	}
+}
+
+@media screen and (min-width: 96rem) {
+	body {
+		padding-left: 0;
+	}
+}

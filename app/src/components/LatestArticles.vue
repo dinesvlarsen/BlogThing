@@ -1,30 +1,31 @@
 <template>
-	<section class="latest-articles">
+	<div class="latest-articles">
 		<h2 class="latest-articles__heading">Other articles:</h2>
 
-		<div class="article" v-for="article in articles" :key="article._id">
-			<router-link :to="article.slug.current">
-				<span class="opacity-hover">
-					<img
-						class="article__image"
-						:src="article.coverImage.image.asset.url"
-						:alt="article.coverImage.alt"
-					/>
-				</span>
+		<div class="latest-articles__article">
+			<div class="article" v-for="article in articles" :key="article._id">
+				<router-link :to="article.slug.current">
+					<span class="opacity-hover">
+						<img
+							class="article__image"
+							:src="article.coverImage.image.asset.url"
+							:alt="article.coverImage.alt"
+						/>
+					</span>
+					<span class="accent-hover">
+						<h3 class="article__heading accent-hover">{{ article.title }}</h3>
+					</span>
+				</router-link>
 				<span class="accent-hover">
-					<h3 class="article__heading accent-hover">{{ article.title }}</h3>
+					<RouterLink
+						class="article__link arrow--animation-parent"
+						:to="article.slug.current"
+						>more <span class="arrow--animation-child"> -> </span></RouterLink
+					>
 				</span>
-			</router-link>
-
-			<span class="accent-hover">
-				<RouterLink
-					class="article__link arrow--animation-parent"
-					:to="article.slug.current"
-					>more <span class="arrow--animation-child"> -> </span></RouterLink
-				>
-			</span>
+			</div>
 		</div>
-	</section>
+	</div>
 </template>
 
 <style>
@@ -63,6 +64,34 @@
 .article__link {
 	font-weight: 500;
 	color: var(--secondary);
+}
+
+@media screen and (min-width: 50rem) {
+	.article:not(.article:last-child) {
+		margin-bottom: 0;
+	}
+	.latest-articles {
+		margin-left: 0;
+		margin-right: auto;
+	}
+	.latest-articles__article {
+		/* background-color: red; */
+		display: flex;
+		flex-grow: 1;
+		gap: var(--16px);
+	}
+
+	.article {
+		justify-content: space-between;
+	}
+
+	.article__image {
+		max-height: 288px;
+	}
+
+	.article__link {
+		align-self: flex-end;
+	}
 }
 </style>
 
