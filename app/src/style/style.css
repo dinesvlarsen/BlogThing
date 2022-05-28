@@ -1,3 +1,8 @@
+/* Content was jumping a couple of pixels everytime you swap page, because the scrollbar was pushing content, decided to just leave it always visible */
+html {
+	overflow: -moz-scrollbars-vertical;
+	overflow-y: scroll;
+}
 body {
 	font-family: var(--font-family);
 	color: var(--primary);
