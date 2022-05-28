@@ -65,6 +65,10 @@
 	margin-bottom: var(--32px);
 }
 
+.post__main {
+	font-size: var(--18px);
+}
+
 .post__main p:not(p:last-child),
 .post__main img {
 	margin-bottom: var(--32px);
@@ -73,6 +77,12 @@
 .post__main p {
 	font-size: var(--18px);
 	line-height: var(--line-height);
+}
+
+.post__main ul {
+	margin-bottom: var(--32px);
+	list-style-position: inside;
+	font-size: var(--18px);
 }
 
 @media screen and (min-width: 50rem) {
@@ -103,6 +113,10 @@
 	.post__main p {
 		font-size: var(--20px);
 		line-height: var(--30px);
+	}
+
+	.post__main ul {
+		font-size: var(--20px);
 	}
 }
 </style>
