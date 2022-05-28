@@ -1,7 +1,7 @@
 <template>
 	<Loading v-if="loading" />
 
-	<div v-else>
+	<div class="fade-in" v-else>
 		<section class="post__intro">
 			<h1 class="post__heading">{{ result.title }}</h1>
 			<p class="post__description">{{ result.description }}</p>
