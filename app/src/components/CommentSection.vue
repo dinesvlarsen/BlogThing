@@ -1,46 +1,68 @@
 <template>
-	<section class="comments">
-		<h4 class="comments__heading">
-			-Comments<span class="comments__count">{{ commentsCount }}</span>
-		</h4>
-
-		<div class="comment" v-if="comments.length === 0">
-			<p class="comments--secondary comments--bold">No comments...</p>
-		</div>
-
-		<div v-else>
-			<div
-				class="comment fade-in"
-				v-for="comment in computedList"
-				:key="comment._id"
-			>
-				<div class="comment__country-info">
-					<span :aria-label="comment.country">{{
-						getFlag(comment.country)
-					}}</span>
-
-					<span class="comment__country"> {{ comment.country }}</span>
-				</div>
-
-				<h4 class="comment__name" aria-label="Comment name">
-					{{ comment.name }}
-					<span class="comment__name--secondary"
-						>wrote - {{ formatDate(comment._createdAt) }}</span
-					>
-				</h4>
-				<p class="comment__text" aria-label="Comment text">
-					{{ comment.text }}
-				</p>
+	<section class="comments-and-form">
+		<!-- COMMENTS  -->
+		<div class="comments-section">
+			<h4 class="comments-section__heading">
+				Comments<span class="comments-section__count">{{ commentsCount }}</span>
+			</h4>
+			<div v-if="comments.length === 0" class="comment">
+				<p class="comments--secondary comments--bold">No comments...</p>
 			</div>
-			<button v-if="!noMoreComments" @click="showMoreComments">
-				Show more
-			</button>
+
+			<div v-else>
+				<div
+					class="comment fade-in"
+					v-for="comment in computedList"
+					:key="comment._id"
+				>
+					<div class="comment__country-info">
+						<span
+							v-if="getFlag(comment.country) === 'No Country'"
+							class="comment__country-name"
+						>
+							No Country</span
+						>
+						<span
+							v-else
+							class="comment__country-flag"
+							:aria-label="comment.country"
+							>{{ getFlag(comment.country) }}</span
+						>
+						<span class="comment__country-name"> {{ comment.country }}</span>
+					</div>
+					<h4 class="comment__name" aria-label="Comment name">
+						{{ comment.name }}
+						<span class="comment__name--secondary"
+							>wrote - {{ formatDate(comment._createdAt) }}</span
+						>
+					</h4>
+					<p class="comment__text" aria-label="Comment text">
+						{{ comment.text }}
+					</p>
+				</div>
+				<!-- <span class="accent-hover">
+					<button
+						v-if="!noMoreComments"
+						class="comment__button arrow--animation-parent"
+						@click="showMoreComments"
+					>
+						Show more <span class="arrow--animation-child">-> </span>
+					</button>
+				</span> -->
+
+				<Button
+					v-if="!noMoreComments"
+					@click="showMoreComments"
+					:buttonText="'SHOW MORE'"
+				/>
+			</div>
 		</div>
 
+		<!-- FORM -->
 		<div class="form-section">
 			<h4 class="form-section__heading">Leave a comment</h4>
 
-			<p class="form-section__description">
+			<p class="form-section__instruction">
 				Fields with an asteriks(*) are mandatory.
 			</p>
 
@@ -59,9 +81,14 @@
 					name="name"
 					v-model="form.name"
 					required
+					:disabled="form.submitted"
 				/>
 				<span class="accent-hover">
-					<button class="form__button arrow--animation-parent" type="submit">
+					<button
+						class="form__button arrow--animation-parent"
+						type="submit"
+						:disabled="form.submitted"
+					>
 						Submit
 						<span class="arrow--animation-child">-></span>
 					</button>
@@ -71,26 +98,23 @@
 	</section>
 </template>
 
-<style scoped>
-.form, .comment {
-	max-width: 384px;
-
-}
+<style>
 /* Comments section */
-.comments {
+.comments-and-form {
 	margin-top: var(--128px);
-	margin-left: 32px;
 	margin-right: 32px;
+	margin-left: 32px;
+	margin-bottom: var(--192px);
 	border-top: solid 4px #e2e2e2;
 }
 
-.comments__heading {
+.comments-section__heading {
 	position: relative;
 	margin: var(--64px) 0 var(--24px) 0;
 	font-size: var(--30px);
 }
 
-.comments__count {
+.comments-section__count {
 	position: relative;
 	bottom: 13px;
 	left: 4px;
@@ -107,31 +131,8 @@
 	background-color: var(--comments-background);
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
 	padding: var(--16px);
+	padding-bottom: var(--32px);
 	border-radius: 2px;
-}
-
-.comment__country-info {
-	margin-bottom: var(--8px);
-}
-
-.comment__country {
-	margin-left: 4px;
-	font-size: var(--14px);
-	color: var(--comments-secondary);
-}
-
-.comment__name {
-	display: inline-block;
-	margin-bottom: var(--16px);
-	font-weight: bold;
-}
-
-.comment__name--secondary {
-	color: var(--comments-secondary);
-}
-
-.comment__text {
-	margin-bottom: var(--16px);
 }
 
 .comments--secondary {
@@ -142,6 +143,34 @@
 	font-weight: bold;
 }
 
+.comment__country-info {
+	margin-bottom: var(--8px);
+}
+
+.comment__country-name {
+	margin-left: 4px;
+	font-size: var(--14px);
+	color: var(--comments-secondary);
+}
+
+.comment__name {
+	display: inline-block;
+	font-size: var(--20px);
+	margin-bottom: var(--16px);
+	font-weight: bold;
+}
+
+.comment__name--secondary {
+	color: var(--comments-secondary);
+	font-size: var(--16px);
+}
+
+.comment__button {
+	margin-bottom: var(--64px);
+	text-transform: uppercase;
+	font-weight: 500;
+}
+
 /* Form section */
 .form-section__heading {
 	margin-bottom: var(--24px);
@@ -149,7 +178,7 @@
 	font-style: italic;
 }
 
-.form-section__description {
+.form-section__instruction {
 	margin-bottom: var(--8px);
 }
 
@@ -164,8 +193,6 @@ textarea:focus {
 }
 
 .form {
-	max-width: 384px;
-	margin-bottom: 192px;
 	display: flex;
 	flex-direction: column;
 	background-color: var(--comments-background);
@@ -202,12 +229,122 @@ textarea:focus {
 	text-transform: uppercase;
 	font-weight: 500;
 }
+
+@media screen and (min-width: 50rem) {
+	.comments-section,
+	.form-section {
+		margin-top: var(--192px);
+		width: 50%;
+	}
+
+	.comments-section__heading,
+	.form-section__heading {
+		font-size: var(--36px);
+	}
+
+	.comments-and-form {
+		margin-top: var(--192px);
+		margin-left: 0;
+		margin-right: 0;
+		display: flex;
+		gap: 5%;
+	}
+
+	.comments-section {
+		max-width: 512px;
+	}
+
+	.comments-section__heading {
+		margin: 0 0 calc(var(--24px) + var(--20px) + var(--8px)) 0;
+	}
+
+	.comment {
+		padding: var(--24px);
+		padding-bottom: var(--32px);
+	}
+
+	.comment__country-info {
+		margin-bottom: var(--16px);
+	}
+
+	.comment__country-flag {
+		display: inline-block;
+		font-size: var(--20px);
+	}
+
+	.comment__country-name {
+		font-size: var(--16px);
+	}
+
+	.comment__name {
+		font-size: var(--24px);
+	}
+
+	.comment__name--secondary {
+		font-size: var(--20px);
+	}
+
+	.comment__text {
+		font-size: var(--20px);
+	}
+
+	.form-section {
+		margin-right: 32px;
+		max-width: 512px;
+	}
+
+	.form {
+		margin-bottom: 192px;
+		display: flex;
+		flex-direction: column;
+		background-color: var(--comments-background);
+		padding: var(--16px) var(--16px) 0 var(--16px);
+		box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+	}
+
+	.form label {
+		font-size: var(--20px);
+	}
+
+	.form__textarea-label,
+	.form__name-label {
+		margin-bottom: var(--8px);
+	}
+
+	.form__textarea,
+	.form__name {
+		font-size: var(--16px);
+		padding: var(--10px);
+		border-radius: 2px;
+	}
+
+	.form__name {
+		margin-bottom: var(--64px);
+	}
+
+	.form__button {
+		margin-bottom: var(--32px);
+		align-self: flex-start;
+		text-transform: uppercase;
+		font-size: var(--16px);
+		font-weight: 500;
+	}
+
+	@media screen and (min-width: 83rem) {
+		.comments-and-form {
+			gap: 131px;
+		}
+	}
+}
 </style>
 
 <script>
 import sanity from './../sanity.js';
 
+import Button from './Button.vue';
+
 export default {
+	components: { Button },
 	props: ['id', 'restCountries', 'country', 'comments', 'queryForComments'],
 
 	created() {
@@ -219,8 +356,9 @@ export default {
 			form: {
 				name: '',
 				textArea: '',
+				submitted: false,
 			},
-			limit: 5,
+			limit: 3,
 			loading: true,
 		};
 	},
@@ -250,10 +388,13 @@ export default {
 		},
 
 		async submitComment() {
+			this.form.submitted = true;
 			await this.createComment(this.form);
+
 			this.form.name = '';
 			this.form.textArea = '';
 			await this.queryForComments(this.$route.params.projectSlug);
+			this.form.submitted = false;
 		},
 
 		async createComment() {
@@ -273,14 +414,13 @@ export default {
 			const countryObject = this.restCountries.find((object) => {
 				return object.name.common === countryName;
 			});
-			if (!countryObject) return 'No Country';
-			this.countryLoading = false;
+			if (!countryObject) return `No Country`;
 			return countryObject.flag;
 		},
 
 		//Increases the property used to determine how many comments are displayed.
 		showMoreComments() {
-			this.limit += 5;
+			this.limit += 3;
 		},
 	},
 
@@ -292,7 +432,7 @@ export default {
 
 		//Used to check if there are no comments on the page, so the proper message can be displayed.
 		noMoreComments() {
-			return this.comments.length < this.limit;
+			return this.comments.length <= this.limit;
 		},
 
 		commentsCount() {

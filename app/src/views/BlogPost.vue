@@ -1,7 +1,7 @@
 <template>
 	<Loading v-if="loading" />
 
-	<div class="fade-in" v-else>
+	<div v-else class="fade-in">
 		<section class="post__intro">
 			<h1 class="post__heading">{{ result.title }}</h1>
 			<p class="post__description">{{ result.description }}</p>
@@ -122,16 +122,16 @@
 </style>
 
 <script>
+import sanity from './../sanity';
+import query from '../groq/blogPost.groq?raw';
+import commentsQuery from './../groq/comments.groq?raw';
+import viewMixin from '../mixins/viewMixin.js';
+
 import { SanityBlocks } from 'sanity-blocks-vue-component';
 import BlockImages from '../components/BlockImages.vue';
 import CommentSection from '../components/CommentSection.vue';
 import LatestArticles from '../components/LatestArticles.vue';
 import Loading from '../components/Loading.vue';
-
-import query from '../groq/blogPost.groq?raw';
-import commentsQuery from './../groq/comments.groq?raw';
-import sanity from './../sanity';
-import viewMixin from '../mixins/viewMixin.js';
 
 export default {
 	components: { SanityBlocks, CommentSection, LatestArticles, Loading },

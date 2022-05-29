@@ -12,17 +12,13 @@
 							:alt="article.coverImage.alt"
 						/>
 					</span>
+
 					<span class="accent-hover">
 						<h3 class="article__heading accent-hover">{{ article.title }}</h3>
 					</span>
 				</router-link>
-				<span class="accent-hover">
-					<RouterLink
-						class="article__link arrow--animation-parent"
-						:to="article.slug.current"
-						>more <span class="arrow--animation-child"> -> </span></RouterLink
-					>
-				</span>
+
+				<Button :slug="article.slug.current" />
 			</div>
 		</div>
 	</div>
@@ -61,11 +57,6 @@
 	font-size: var(--20px);
 }
 
-.article__link {
-	font-weight: 500;
-	color: var(--secondary);
-}
-
 @media screen and (min-width: 50rem) {
 	.article:not(.article:last-child) {
 		margin-bottom: 0;
@@ -88,18 +79,14 @@
 	.article__image {
 		max-height: 288px;
 	}
-
-	.article__link {
-		align-self: flex-end;
-	}
 }
 </style>
 
 <script>
-import viewMixin from '../mixins/viewMixin.js';
+import Button from './Button.vue';
 
 export default {
+	components: { Button },
 	props: ['articles'],
-	mixins: [viewMixin],
 };
 </script>

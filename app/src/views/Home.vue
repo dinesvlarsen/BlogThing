@@ -1,7 +1,7 @@
 <template>
 	<Loading v-if="loading" />
 
-	<main class="home" v-else="loading" v-for="post in result">
+	<main v-else="loading" class="home" v-for="post in result">
 		<div class="home__left">
 			<RouterLink :to="post.slug.current">
 				<img
@@ -23,13 +23,7 @@
 				<p class="home__description">{{ post.description }}</p>
 			</RouterLink>
 
-			<span class="accent-hover">
-				<RouterLink
-					class="home__link arrow--animation-parent"
-					:to="post.slug.current"
-					>more <span class="arrow--animation-child">-></span></RouterLink
-				>
-			</span>
+			<Button :slug="post.slug.current" />
 		</div>
 	</main>
 </template>
@@ -60,16 +54,6 @@
 	color: var(--secondary);
 	font-size: var(--14px);
 	font-weight: 500;
-}
-
-.home__link {
-	color: var(--secondary);
-	font-weight: 500;
-}
-
-.home__link:active {
-	color: var(--accent);
-	text-decoration: underline;
 }
 
 @media screen and (min-width: 50rem) {
@@ -121,9 +105,10 @@
 import query from '../groq/home.groq?raw';
 import viewMixin from '../mixins/viewMixin.js';
 import Loading from '../components/Loading.vue';
+import Button from '../components/Button.vue';
 
 export default {
-	components: { Loading },
+	components: { Loading, Button },
 	mixins: [viewMixin],
 
 	async created() {
