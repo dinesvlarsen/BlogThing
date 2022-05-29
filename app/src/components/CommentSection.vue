@@ -1,13 +1,12 @@
 <template>
 	<section class="comments-and-form">
-		<button @click="deleteComments">Delete ALL comments</button>
-		<div>{{ countryCode }}</div>
 		<!-- COMMENTS  -->
 		<div class="comments-section">
 			<h4 class="comments-section__heading">
 				Comments<span class="comments-section__count">{{ commentsCount }}</span>
 			</h4>
-			<div v-if="comments.length === 0" class="comment">
+			<button @click="deleteComments">Delete ALL comments</button>
+			<div v-if="comments.length === 0" class="comment__no-comments">
 				<p class="comments--secondary comments--bold">No comments...</p>
 			</div>
 
@@ -130,13 +129,18 @@
 	margin-bottom: var(--96px);
 }
 
-.comment {
+.comment,
+.comment__no-comments {
 	margin-bottom: var(--32px);
 	background-color: var(--comments-background);
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
 	padding: var(--16px);
 	padding-bottom: var(--32px);
 	border-radius: 2px;
+}
+
+.comment__no-comments {
+	padding: var(--16px);
 }
 
 .comments--secondary {
@@ -352,7 +356,6 @@ export default {
 	props: ['id', 'restCountries', 'countryCode', 'comments', 'queryForComments'],
 
 	created() {
-		console.log(this.countryCode);
 		this.formatDate();
 	},
 
@@ -436,12 +439,6 @@ export default {
 			if (!countryObject) return `No Country`;
 			if (option === 'flag') return countryObject.flag;
 			if (option === 'countryName') return countryObject.name.common;
-
-			// console.log(this.restCountries.find((object) => {
-			// 	return object.
-			// }));
-
-			console.log(countryObject.name.common);
 
 			return countryObject.flag;
 		},
