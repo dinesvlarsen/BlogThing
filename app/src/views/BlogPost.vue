@@ -2,7 +2,6 @@
 	<Loading v-if="loading" />
 
 	<div v-else class="fade-in">
-		<div>{{ countryCode }}</div>
 		<section class="post__intro">
 			<h1 class="post__heading">{{ result.title }}</h1>
 			<p class="post__description">{{ result.description }}</p>
@@ -241,15 +240,6 @@ export default {
 
 			this.countryCode = countryCode;
 		},
-
-		// async getCountry() {
-		// 	await fetch('http://ip-api.com/json/?fields=status,message,country')
-		// 		.then((response) => response.json())
-		// 		.then((data) => (this.country = data.country))
-		// 		.catch((e) =>
-		// 			console.error(e + ' : Might be ad block blocking the api')
-		// 		);
-		// },
 	},
 
 	computed: {

@@ -1,7 +1,6 @@
 <template>
 	<section class="comments-and-form">
 		<button @click="deleteComments">Delete ALL comments</button>
-		<div>{{ countryCode }}</div>
 		<!-- COMMENTS  -->
 		<div class="comments-section">
 			<h4 class="comments-section__heading">
@@ -352,7 +351,6 @@ export default {
 	props: ['id', 'restCountries', 'countryCode', 'comments', 'queryForComments'],
 
 	created() {
-		console.log(this.countryCode);
 		this.formatDate();
 	},
 
@@ -436,12 +434,6 @@ export default {
 			if (!countryObject) return `No Country`;
 			if (option === 'flag') return countryObject.flag;
 			if (option === 'countryName') return countryObject.name.common;
-
-			// console.log(this.restCountries.find((object) => {
-			// 	return object.
-			// }));
-
-			console.log(countryObject.name.common);
 
 			return countryObject.flag;
 		},
