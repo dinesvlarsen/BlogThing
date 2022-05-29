@@ -48,7 +48,6 @@ textarea {
 }
 
 /* Had to move this here so the global accent-hover class would work */
-.home__link:visited,
-.article__link:visited {
+.button__link:visited {
 	color: var(--secondary);
 }

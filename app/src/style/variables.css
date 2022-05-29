@@ -23,10 +23,11 @@
 	/* Vertical spacings & font sizes */
 	--4px: 0.25rem;
 	--8px: 0.5rem;
+	--10px: 0.625rem;
 	--12px: 0.75rem;
 	--14px: 0.875rem;
 	--16px: 1rem;
-	--18px: 1, 125rem;
+	--18px: 1.125rem;
 	--20px: 1.25rem;
 	--24px: 1.5rem;
 	--30px: 1.875rem;
@@ -37,4 +38,5 @@
 	--96px: 6rem;
 	--128px: 8rem;
 	--192px: 12rem;
+	--256px: 16rem;
 }

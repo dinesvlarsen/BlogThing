@@ -1,5 +1,5 @@
 <template>
-<!-- Found this loader on codepen: https://codepen.io/tashfene/pen/raEqrJ/ -->
+	<!-- Found this loader on codepen: https://codepen.io/tashfene/pen/raEqrJ/ -->
 	<div class="loader-wrapper">
 		<div class="loader-wrapper__content">
 			<span class="loader"><span class="loader-inner"></span></span>

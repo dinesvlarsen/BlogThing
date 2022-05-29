@@ -12,7 +12,7 @@
 	display: flex;
 	justify-content: center;
 	padding-top: 16px;
-	margin-bottom: 32px;
+	margin-bottom: var(--32px);
 	/* Dont want the logo to be root size,  */
 	font-size: 16px;
 }
@@ -23,5 +23,14 @@
 
 .logo__detail {
 	color: var(--accent);
+}
+
+@media screen and (min-width: 50rem) {
+	.header {
+		font-size: 24px;
+		justify-content: flex-start;
+		margin-bottom: var(--128px);
+		
+	}
 }
 </style>

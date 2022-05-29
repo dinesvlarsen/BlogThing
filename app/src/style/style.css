@@ -1,11 +1,15 @@
-* {
-	/* font-size: 24px; */
+/* Content was jumping a couple of pixels everytime you swap page, because the scrollbar was pushing content, decided to just leave it always visible */
+html {
+	overflow: -moz-scrollbars-vertical;
+	overflow-y: scroll;
 }
 body {
 	font-family: var(--font-family);
 	color: var(--primary);
 	background: var(--background);
-	max-width: 800px;
+	max-width: 1440px;
+	margin: 0 auto;
+	width: 100%;
 }
 
 p {
@@ -18,6 +22,8 @@ p {
 }
 
 .arrow--animation-child {
+	/* Need inline block for the arrow to be able to move */
+	display: inline-block;
 	transition: transform 500ms;
 }
 
@@ -60,4 +66,14 @@ p {
 	}
 }
 
-@media screen and (min-width: );
+@media screen and (min-width: 50rem) {
+	body {
+		padding-left: 10%;
+	}
+}
+
+@media screen and (min-width: 96rem) {
+	body {
+		padding-left: 0;
+	}
+}

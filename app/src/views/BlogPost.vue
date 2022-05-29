@@ -1,7 +1,7 @@
 <template>
 	<Loading v-if="loading" />
 
-	<div class="fade-in" v-else>
+	<div v-else class="fade-in">
 		<section class="post__intro">
 			<h1 class="post__heading">{{ result.title }}</h1>
 			<p class="post__description">{{ result.description }}</p>
@@ -43,8 +43,8 @@
 	margin-right: 32px;
 }
 .post__heading {
-	font-size: var(--36px);
 	margin-bottom: var(--16px);
+	font-size: var(--36px);
 }
 
 .post__description {
@@ -65,6 +65,10 @@
 	margin-bottom: var(--32px);
 }
 
+.post__main {
+	font-size: var(--18px);
+}
+
 .post__main p:not(p:last-child),
 .post__main img {
 	margin-bottom: var(--32px);
@@ -74,19 +78,60 @@
 	font-size: var(--18px);
 	line-height: var(--line-height);
 }
+
+.post__main ul {
+	margin-bottom: var(--32px);
+	list-style-position: inside;
+	font-size: var(--18px);
+}
+
+@media screen and (min-width: 50rem) {
+	.post__intro > *:not(img),
+	.post__main > *:not(div) {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+	.post__main,
+	.post__intro {
+		max-width: 800px;
+	}
+
+	.post__heading {
+		margin-bottom: var(--24px);
+		font-size: var(--48px);
+	}
+
+	.post__description {
+		font-size: var(--24px);
+		line-height: var(--30px);
+	}
+
+	.post__time {
+		font-size: var(--16px);
+	}
+
+	.post__main p {
+		font-size: var(--20px);
+		line-height: var(--30px);
+	}
+
+	.post__main ul {
+		font-size: var(--20px);
+	}
+}
 </style>
 
 <script>
+import sanity from './../sanity';
+import query from '../groq/blogPost.groq?raw';
+import commentsQuery from './../groq/comments.groq?raw';
+import viewMixin from '../mixins/viewMixin.js';
+
 import { SanityBlocks } from 'sanity-blocks-vue-component';
 import BlockImages from '../components/BlockImages.vue';
 import CommentSection from '../components/CommentSection.vue';
 import LatestArticles from '../components/LatestArticles.vue';
 import Loading from '../components/Loading.vue';
-
-import query from '../groq/blogPost.groq?raw';
-import commentsQuery from './../groq/comments.groq?raw';
-import sanity from './../sanity';
-import viewMixin from '../mixins/viewMixin.js';
 
 export default {
 	components: { SanityBlocks, CommentSection, LatestArticles, Loading },
