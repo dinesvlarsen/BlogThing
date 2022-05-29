@@ -1,5 +1,7 @@
 <template>
 	<section class="comments-and-form">
+		<button @click="deleteComments">Delete ALL comments</button>
+		<div>{{ countryCode }}</div>
 		<!-- COMMENTS  -->
 		<div class="comments-section">
 			<h4 class="comments-section__heading">
@@ -17,7 +19,7 @@
 				>
 					<div class="comment__country-info">
 						<span
-							v-if="getFlag(comment.country) === 'No Country'"
+							v-if="getFlag(comment.country, 'countryName') === 'No Country'"
 							class="comment__country-name"
 						>
 							No Country</span
@@ -26,9 +28,11 @@
 							v-else
 							class="comment__country-flag"
 							:aria-label="comment.country"
-							>{{ getFlag(comment.country) }}</span
+							>{{ getFlag(comment.country, 'flag') }}</span
 						>
-						<span class="comment__country-name"> {{ comment.country }}</span>
+						<span class="comment__country-name">
+							{{ getFlag(comment.country, 'countryName') }}</span
+						>
 					</div>
 					<h4 class="comment__name" aria-label="Comment name">
 						{{ comment.name }}
@@ -345,9 +349,10 @@ import Button from './Button.vue';
 
 export default {
 	components: { Button },
-	props: ['id', 'restCountries', 'country', 'comments', 'queryForComments'],
+	props: ['id', 'restCountries', 'countryCode', 'comments', 'queryForComments'],
 
 	created() {
+		console.log(this.countryCode);
 		this.formatDate();
 	},
 
@@ -364,6 +369,19 @@ export default {
 	},
 
 	methods: {
+		async deleteComments() {
+			await sanity
+				.delete({
+					query: '*[_type == "comment"]',
+				})
+				.then(() => {
+					console.log('Documents matching *[_type == "comment"] was deleted');
+				})
+				.catch((err) => {
+					console.error('delete failed: ', err.message);
+				});
+		},
+
 		formatDate(date) {
 			const options = {
 				month: 'long',
@@ -402,7 +420,7 @@ export default {
 				_type: 'comment',
 				name: this.form.name,
 				text: this.form.textArea,
-				country: this.country,
+				country: this.countryCode,
 				post: {
 					_type: 'reference',
 					_ref: this.id,
@@ -410,11 +428,21 @@ export default {
 			});
 		},
 
-		getFlag(countryName) {
+		//Takes inn the countryCode and a 'string' specifying whether you want 'flag' or 'countryName'
+		getFlag(countryCode, option) {
 			const countryObject = this.restCountries.find((object) => {
-				return object.name.common === countryName;
+				return object.cca2 === countryCode;
 			});
 			if (!countryObject) return `No Country`;
+			if (option === 'flag') return countryObject.flag;
+			if (option === 'countryName') return countryObject.name.common;
+
+			// console.log(this.restCountries.find((object) => {
+			// 	return object.
+			// }));
+
+			console.log(countryObject.name.common);
+
 			return countryObject.flag;
 		},
 
