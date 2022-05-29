@@ -2,6 +2,7 @@
 	<Loading v-if="loading" />
 
 	<div v-else class="fade-in">
+		<div>{{ countryCode }}</div>
 		<section class="post__intro">
 			<h1 class="post__heading">{{ result.title }}</h1>
 			<p class="post__description">{{ result.description }}</p>
@@ -28,7 +29,7 @@
 			<CommentSection
 				:id="this.result._id"
 				:restCountries="restCountries"
-				:country="country"
+				:countryCode="countryCode"
 				:comments="comments"
 				:queryForComments="queryForComments"
 			/>
@@ -149,12 +150,13 @@ export default {
 			loading: true,
 			loadingDots: '',
 			restCountries: [],
-			country: '',
+			countryCode: '',
 			comments: [],
 		};
 	},
 
 	async created() {
+		this.userCountry();
 		await this.sanityFetch(
 			query,
 			{
@@ -169,7 +171,7 @@ export default {
 			image: this.result.coverImage.image.asset.url,
 		});
 
-		this.getCountry();
+		// this.getCountry();
 		this.getRestCountries();
 		this.queryForComments(this.$route.params.projectSlug);
 		this.scrollToTop();
@@ -230,14 +232,24 @@ export default {
 				});
 		},
 
-		async getCountry() {
-			await fetch('http://ip-api.com/json/?fields=status,message,country')
-				.then((response) => response.json())
-				.then((data) => (this.country = data.country))
-				.catch((e) =>
-					console.error(e + ' : Might be ad block blocking the api')
-				);
+		async userCountry() {
+			const request = await fetch(
+				'https://ipinfo.io/json?token=e9153dc0c16fe3'
+			);
+			const json = await request.json();
+			const countryCode = json.country;
+
+			this.countryCode = countryCode;
 		},
+
+		// async getCountry() {
+		// 	await fetch('http://ip-api.com/json/?fields=status,message,country')
+		// 		.then((response) => response.json())
+		// 		.then((data) => (this.country = data.country))
+		// 		.catch((e) =>
+		// 			console.error(e + ' : Might be ad block blocking the api')
+		// 		);
+		// },
 	},
 
 	computed: {
