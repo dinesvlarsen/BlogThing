@@ -7,5 +7,5 @@ export default sanityClient({
 	apiVersion: '2022-05-11', //dagen prosjektet ble først opprettet/sist oppdatert
 	useCdn: true, //false for localhost, true for netlify
 	withCredentials: true,
-	// token: token,
+	token: token,
 });
