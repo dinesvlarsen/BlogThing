@@ -1,6 +1,5 @@
 <template>
 	<Loading v-if="loading" />
-
 	<main v-else="loading" class="home" v-for="post in result">
 		<div class="home__left">
 			<RouterLink :to="post.slug.current">
