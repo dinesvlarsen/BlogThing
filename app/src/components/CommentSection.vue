@@ -422,8 +422,6 @@ export default {
 		},
 
 		async createComment() {
-			const TEST = import.meta.env.VITE_SANITY_KEY;
-			console.log(TEST);
 			await sanity.create({
 				_type: 'comment',
 				name: this.form.name,

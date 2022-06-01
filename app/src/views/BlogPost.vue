@@ -250,10 +250,17 @@ export default {
 		},
 
 		async userCountry() {
-			const ipinfo_key = import.meta.env.VITE_IPINFO_API_KEY;
-			console.log(ipinfo_key);
+			// LOCAL IPINFO FETCH
+			// const LOCAL_KEY = import.meta.env.VITE_IPINFO_API_KEY;
+			// const response = await fetch(
+			// 	`https://ipinfo.io/json?token=${LOCAL_KEY}`
+			// ).catch((error) => console.error('failed to fetch ipinfo: ', error));
+
+			//Netlify
+			const IP_INFO_KEY_NETLIFY = import.meta.env.VITE_SANITY_KEY;
+			console.log(IP_INFO_KEY_NETLIFY);
 			const response = await fetch(
-				`https://ipinfo.io/json?token=${ipinfo_key}`
+				`https://ipinfo.io/json?token=${IP_INFO_KEY_NETLIFY}`
 			).catch((error) => console.error('failed to fetch ipinfo: ', error));
 			const data = await response.json();
 			const countryCode = data.country;
