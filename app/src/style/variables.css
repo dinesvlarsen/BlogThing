@@ -4,21 +4,10 @@
 	--background: #fcfcfc;
 	--comments-background: #f5f5f5;
 	--comments-secondary: #707070;
-
-	--line-height: var(--24px);
-	/* --line-height: 26px; */
-	/* For some reason this color displays as blue if I use HSL but fine if I use rgb */
 	--accent: #b322f1;
-	--font-family: 'Inter', sans-serif;
 
-	/* Dark mode colors */
-	/* 
-	--primary: hsl(0, 0, 99);
-	--background: hsl(284, 10, 16);
-	--secondary: hsl(0, 0, 76);
-	--comments-secondary: hsl(0, 0, 89);
-	--comments-background: hsl(284, 6, 22);
-	*/
+	--font-family: 'Inter', sans-serif;
+	--line-height: var(--24px);
 
 	/* Vertical spacings & font sizes */
 	--4px: 0.25rem;

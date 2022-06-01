@@ -3,6 +3,7 @@ html {
 	overflow: -moz-scrollbars-vertical;
 	overflow-y: scroll;
 }
+
 body {
 	font-family: var(--font-family);
 	color: var(--primary);
@@ -16,41 +17,7 @@ p {
 	max-width: 75ch;
 }
 
-/* Arrow move hover animation */
-.arrow--animation-parent:hover .arrow--animation-child {
-	transform: translateX(5px);
-}
-
-.arrow--animation-child {
-	/* Need inline block for the arrow to be able to move */
-	display: inline-block;
-	transition: transform 500ms;
-}
-
-/* Accent hover animation */
-.accent-hover {
-	/* We have display inline-block so the spans I use for accent-hover will accept margins */
-
-	/* This property is added so the button wont take full width when flexbox is enabled on the parent element */
-	align-self: flex-start;
-}
-.accent-hover:hover > * {
-	color: var(--accent);
-}
-
-.accent-hover > * {
-	transition: 500ms;
-}
-
-/* Opacity hover animation */
-.opacity-hover:hover img {
-	opacity: 0.7;
-}
-
-.opacity-hover img {
-	transition: 500ms;
-}
-
+/* ANIMATIONS */
 /* Fade in animation (Used on load) */
 .fade-in {
 	animation: fadeInAnimation ease 1000ms;
@@ -70,6 +37,43 @@ p {
 	body {
 		padding-left: 10%;
 	}
+	
+	/* ANIMATIONS */
+	/* Arrow move hover animation */
+	.arrow--animation-parent:hover .arrow--animation-child {
+		transform: translateX(5px);
+	}
+
+	.arrow--animation-child {
+		/* Need inline block for the arrow to be able to move */
+		display: inline-block;
+		transition: transform 500ms;
+	}
+
+	/* Accent hover animation */
+	.accent-hover {
+		/* We have display inline-block so the spans I use for accent-hover will accept margins */
+
+		/* This property is added so the button wont take full width when flexbox is enabled on the parent element */
+		align-self: flex-start;
+	}
+	.accent-hover:hover > * {
+		color: var(--accent);
+	}
+
+	.accent-hover > * {
+		transition: 500ms;
+	}
+
+	/* Opacity hover animation */
+	.opacity-hover:hover img {
+		opacity: 0.7;
+	}
+
+	.opacity-hover img {
+		transition: 500ms;
+	}
+
 }
 
 @media screen and (min-width: 96rem) {
@@ -77,3 +81,6 @@ p {
 		padding-left: 0;
 	}
 }
+
+
+

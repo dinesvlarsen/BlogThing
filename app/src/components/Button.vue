@@ -16,7 +16,16 @@
 
 <script>
 export default {
-	props: ['slug', 'buttonText'],
+	props: {
+		slug: {
+			type: String,
+			required: false,
+		},
+		buttonText: {
+			type: String,
+			required: false,
+		},
+	},
 };
 </script>
 

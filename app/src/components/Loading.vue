@@ -10,6 +10,32 @@
 		</div>
 	</div>
 </template>
+
+<script>
+export default {
+	mounted() {
+		this.dotsAnimation();
+	},
+	data() {
+		return {
+			loadingDots: '',
+		};
+	},
+	methods: {
+		//Simple interval which adds a period until it reaches 3 then starts over.
+		dotsAnimation() {
+			setInterval(() => {
+				if (this.loadingDots.length === 3) {
+					this.loadingDots = '';
+				} else {
+					this.loadingDots += '.';
+				}
+			}, 500);
+		},
+	},
+};
+</script>
+
 <style scoped>
 .loader-wrapper {
 	width: 100%;
@@ -89,27 +115,3 @@
 	}
 }
 </style>
-<script>
-export default {
-	mounted() {
-		this.dotsAnimation();
-	},
-	data() {
-		return {
-			loadingDots: '',
-		};
-	},
-	methods: {
-		//Simple interval which adds a period until it reaches 3 then starts over.
-		dotsAnimation() {
-			setInterval(() => {
-				if (this.loadingDots.length === 3) {
-					this.loadingDots = '';
-				} else {
-					this.loadingDots += '.';
-				}
-			}, 500);
-		},
-	},
-};
-</script>

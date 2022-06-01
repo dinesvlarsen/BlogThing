@@ -1,5 +1,5 @@
 <template>
-	<img loading="lazy" :src="src" :alt="alt" width="400px" height="300px" />
+	<img loading="lazy" :src="sizedImage(src, height)" :alt="alt" />
 </template>
 
 <script>
@@ -13,11 +13,20 @@ export default {
 			type: String,
 			required: false,
 		},
+
+		height: {
+			type: String,
+			required: false,
+		},
 	},
 
 	methods: {
-		smallImage(sourceLink) {
-			return `${sourceLink}?h=271`;
+		sizedImage(sourceLink, height) {
+			if (height) {
+				return `${sourceLink}?h=${height}`;
+			} else {
+				return sourceLink;
+			}
 		},
 	},
 };

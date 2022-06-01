@@ -1,40 +1,85 @@
 <template>
 	<Loading v-if="loading" />
 
-	<article v-else="loading" class="home" v-for="(post, index) in result">
-		<div class="home__left">
-			<RouterLink :to="post.slug.current">
-				<!-- <img :src="this.smallImage(this.imageURL(post))" alt="" /> -->
-				<!-- <img
-					class="home__image"
-					:src="this.imageURL(post)"
-					:alt="post.coverImage.alt"
-					:loading="index > 3 ? 'lazy' : 'auto'"
-				/> -->
+	<main v-else="loading">
+		<article class="home" v-for="(post, index) in result">
+			<div class="home__left">
+				<RouterLink :to="post.slug.current">
+					<Image
+						class="home__image"
+						:src="this.imageURL(post)"
+						:alt="post.coverImage.alt"
+						:height="'400'"
+					/>
+				</RouterLink>
+			</div>
 
-				<Image
-					class="home__image"
-					:src="this.imageURL(post)"
-					:alt="post.coverImage.alt"
-				/>
-			</RouterLink>
-		</div>
+			<div class="home__right">
+				<RouterLink class="home__right--height" :to="post.slug.current">
+					<span class="accent-hover">
+						<h1 class="home__header">{{ post.title }}</h1>
+					</span>
+					<time class="home__time" :datetime="formatDate(post.date)">{{
+						formatDate(post.date)
+					}}</time>
+					<p class="home__description">{{ post.description }}</p>
+				</RouterLink>
 
-		<div class="home__right">
-			<RouterLink class="home__right--height" :to="post.slug.current">
-				<span class="accent-hover">
-					<h1 class="home__header">{{ post.title }}</h1>
-				</span>
-				<time class="home__time" :datetime="formatDate(post.date)">{{
-					formatDate(post.date)
-				}}</time>
-				<p class="home__description">{{ post.description }}</p>
-			</RouterLink>
-
-			<Button :slug="post.slug.current" />
-		</div>
-	</article>
+				<Button :slug="post.slug.current" />
+			</div>
+		</article>
+	</main>
 </template>
+
+<script>
+import query from '../groq/home.groq?raw';
+import viewMixin from '../mixins/viewMixin.js';
+
+import Loading from '../components/Loading.vue';
+import Button from '../components/Button.vue';
+import Image from '../components/Image.vue';
+
+export default {
+	components: { Loading, Button, Image },
+	mixins: [viewMixin],
+
+	async created() {
+		await this.sanityFetch(query, {
+			blogpost: 'blogpost',
+		});
+
+		this.metaTags({
+			title: 'BlogThing',
+		});
+	},
+
+	methods: {
+		formattedDate(value) {
+			this.$store.dispatch('formatDate', value);
+
+			const date = this.$store.getters.date;
+			return date;
+		},
+		//Takes in a date, which we use to generate a date object with new Date(). Which we convert to a language sensitive string ('en-US') with the specified options.
+		//toLocalString documentation: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
+		formatDate(date) {
+			const options = {
+				month: 'long',
+				day: 'numeric',
+				year: 'numeric',
+			};
+
+			return new Date(date).toLocaleString('en-US', options);
+		},
+
+		imageURL(post) {
+			return post.coverImage.image.asset.url;
+		},
+	},
+
+	computed: {},
+};
+</script>
 
 <style>
 .home {
@@ -108,52 +153,3 @@
 	}
 }
 </style>
-
-<script>
-import query from '../groq/home.groq?raw';
-import viewMixin from '../mixins/viewMixin.js';
-import Loading from '../components/Loading.vue';
-import Button from '../components/Button.vue';
-import Image from '../components/Image.vue';
-
-export default {
-	components: { Loading, Button, Image },
-	mixins: [viewMixin],
-
-	async created() {
-		await this.sanityFetch(query, {
-			blogpost: 'blogpost',
-		});
-
-		this.metaTags({
-			title: 'BlogThing',
-		});
-	},
-
-	methods: {
-		formattedDate(value) {
-			this.$store.dispatch('formatDate', value);
-
-			const date = this.$store.getters.date;
-			return date;
-		},
-		//Takes in a date, which we use to generate a date object with new Date(). Which we convert to a language sensitive string ('en-US') with the specified options.
-		//toLocalString documentation: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString
-		formatDate(date) {
-			const options = {
-				month: 'long',
-				day: 'numeric',
-				year: 'numeric',
-			};
-
-			return new Date(date).toLocaleString('en-US', options);
-		},
-
-		imageURL(post) {
-			return post.coverImage.image.asset.url;
-		},
-	},
-
-	computed: {},
-};
-</script>
