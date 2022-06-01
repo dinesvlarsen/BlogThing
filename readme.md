@@ -1,5 +1,5 @@
 # BlogThing
-A website where the owner can create blog posts through the Sanity CMS. It also has a comment section where people can comment on the different blog posts. It uses api keys from Sanity CMS which I've stored in Netlify env variables. So commenting won't work on your local machine.
+A website where the owner can create blog posts through the Sanity CMS. It also has a comment section where people can comment on the different blog posts, there will be flags displayed with the users comment (assuming that the ipinfo api works as expected). It uses api keys from Sanity CMS which I've stored in Netlify env variables. So commenting might not work on your local machine.
 
 
 
