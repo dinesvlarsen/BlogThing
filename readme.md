@@ -1,5 +1,4 @@
 # BlogThing
-___
 > 
 > A website where the owner can create blog posts through the Sanity CMS. It also has a comment section where people can comment on the different blog posts.
 > 
@@ -10,6 +9,5 @@ ___
 >
 
 ## How to run on your local machine
-___
 - Navigate to **BlogThing/app** and run **npm install**
 - To start localhost navigate to **BlogThing/app** and run **npm run dev**
