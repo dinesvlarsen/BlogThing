@@ -257,7 +257,7 @@ export default {
 			// ).catch((error) => console.error('failed to fetch ipinfo: ', error));
 
 			//Netlify
-			const IP_INFO_KEY_NETLIFY = import.meta.env.VITE_SANITY_KEY;
+			const IP_INFO_KEY_NETLIFY = import.meta.env.VITE_IP_INFO_KEY;
 			console.log(IP_INFO_KEY_NETLIFY);
 			const response = await fetch(
 				`https://ipinfo.io/json?token=${IP_INFO_KEY_NETLIFY}`
