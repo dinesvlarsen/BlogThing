@@ -251,6 +251,7 @@ export default {
 
 		async userCountry() {
 			const ipinfo_key = import.meta.env.VITE_IPINFO_API_KEY;
+			console.log(ipinfo_key);
 			const response = await fetch(
 				`https://ipinfo.io/json?token=${ipinfo_key}`
 			).catch((error) => console.error('failed to fetch ipinfo: ', error));
