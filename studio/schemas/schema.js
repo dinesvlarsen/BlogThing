@@ -4,10 +4,11 @@ import schemaTypes from 'all:part:@sanity/base/schema-type'
 /* documents */
 import blogPost from './documents/blogPost.js'
 import comment from './documents/comment.js'
+import figure from './documents/figure.js'
 
 
 /* types */
-import figure from './types/figure.js'
+
 import blockContent from './types/blockContent.js';
 
 export default createSchema({

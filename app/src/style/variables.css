@@ -8,7 +8,7 @@
 	--line-height: var(--24px);
 	/* --line-height: 26px; */
 	/* For some reason this color displays as blue if I use HSL but fine if I use rgb */
-	--accent: #c557f4;
+	--accent: #b322f1;
 	--font-family: 'Inter', sans-serif;
 
 	/* Dark mode colors */

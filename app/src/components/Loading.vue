@@ -100,6 +100,7 @@ export default {
 		};
 	},
 	methods: {
+		//Simple interval which adds a period until it reaches 3 then starts over.
 		dotsAnimation() {
 			setInterval(() => {
 				if (this.loadingDots.length === 3) {

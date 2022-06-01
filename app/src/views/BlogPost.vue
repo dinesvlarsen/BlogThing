@@ -8,9 +8,15 @@
 			<time class="post__time" :datetime="formattedDate">{{
 				formattedDate
 			}}</time>
-			<img
+			<!-- <img
 				class="post__image"
 				loading="lazy"
+				:src="result.coverImage.image.asset.url"
+				:alt="result.coverImage.alt"
+			/> -->
+
+			<Image
+				class="post__image"
 				:src="result.coverImage.image.asset.url"
 				:alt="result.coverImage.alt"
 			/>
@@ -132,9 +138,18 @@ import BlockImages from '../components/BlockImages.vue';
 import CommentSection from '../components/CommentSection.vue';
 import LatestArticles from '../components/LatestArticles.vue';
 import Loading from '../components/Loading.vue';
+import Image from '../components/Image.vue';
+import Code from '../components/Code.vue';
 
 export default {
-	components: { SanityBlocks, CommentSection, LatestArticles, Loading },
+	components: {
+		SanityBlocks,
+		CommentSection,
+		LatestArticles,
+		Loading,
+		Image,
+		Code,
+	},
 
 	mixins: [viewMixin],
 
@@ -144,6 +159,9 @@ export default {
 			serializers: {
 				types: {
 					figure: BlockImages,
+				},
+				marks: {
+					code: Code,
 				},
 			},
 			loading: true,
@@ -232,11 +250,12 @@ export default {
 		},
 
 		async userCountry() {
-			const request = await fetch(
-				'https://ipinfo.io/json?token=e9153dc0c16fe3'
-			);
-			const json = await request.json();
-			const countryCode = json.country;
+			const ipinfo_key = import.meta.env.VITE_IPINFO_API_KEY;
+			const response = await fetch(
+				`https://ipinfo.io/json?token=${ipinfo_key}`
+			).catch((error) => console.error('failed to fetch ipinfo: ', error));
+			const data = await response.json();
+			const countryCode = data.country;
 
 			this.countryCode = countryCode;
 		},
