@@ -11,7 +11,5 @@ ___
 
 ## How to run on your local machine
 ___
-- Navigate to BlogThing/app and run npm install:
-> $ npm install
-- To start localhost navigate to BlogThing/app and run npm run dev:
-> $ npm run dev
+- Navigate to **BlogThing/app** and run **npm install**
+- To start localhost navigate to **BlogThing/app** and run **npm run dev**
