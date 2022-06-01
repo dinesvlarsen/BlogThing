@@ -5,7 +5,7 @@
 
 **Made with:**
 > 
-> [Vue.js](https://vuejs.org/), [Vue Router](https://router.vuejs.org/), [Sanity Studio](https://www.sanity.io/), [REST Countries](https://restcountries.com/), [ipinfo](https://ipinfo.io/), [Sanity Blocks Vue Component](https://github.com/rdunk/sanity-blocks-vue-component)
+> [**Vue.js**](https://vuejs.org/), [**Vue Router**](https://router.vuejs.org/), [**Sanity Studio**](https://www.sanity.io/), [**REST Countries**](https://restcountries.com/), [**ipinfo**](https://ipinfo.io/), [**Sanity Blocks Vue Component**](https://github.com/rdunk/sanity-blocks-vue-component)
 >
 
 ## How to run on your local machine
