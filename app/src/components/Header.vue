@@ -7,6 +7,7 @@
 		</RouterLink>
 	</header>
 </template>
+
 <style>
 .header {
 	display: flex;

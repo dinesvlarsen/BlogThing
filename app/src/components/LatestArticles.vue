@@ -1,16 +1,18 @@
 <template>
-	<div class="latest-articles">
+	<section class="latest-articles">
 		<h2 class="latest-articles__heading">Other articles:</h2>
 
 		<div class="latest-articles__article">
 			<div class="article" v-for="article in articles" :key="article._id">
 				<router-link :to="article.slug.current">
 					<span class="opacity-hover">
-						<img
-							class="article__image"
-							:src="article.coverImage.image.asset.url"
-							:alt="article.coverImage.alt"
-						/>
+						<div class="article__image">
+							<Image
+								:src="article.coverImage.image.asset.url"
+								:alt="article.coverImage.alt"
+								:height="'288'"
+							/>
+						</div>
 					</span>
 
 					<span class="accent-hover">
@@ -21,8 +23,18 @@
 				<Button :slug="article.slug.current" />
 			</div>
 		</div>
-	</div>
+	</section>
 </template>
+
+<script>
+import Button from './Button.vue';
+import Image from './Image.vue';
+
+export default {
+	components: { Button, Image },
+	props: ['articles'],
+};
+</script>
 
 <style>
 .latest-articles {
@@ -45,7 +57,7 @@
 	flex-direction: column;
 }
 
-.article__image {
+.article__image img {
 	margin-bottom: var(--8px);
 	border-radius: 2px;
 	max-height: calc(288px - 130px);
@@ -76,17 +88,8 @@
 		justify-content: space-between;
 	}
 
-	.article__image {
+	.article__image img {
 		max-height: 288px;
 	}
 }
 </style>
-
-<script>
-import Button from './Button.vue';
-
-export default {
-	components: { Button },
-	props: ['articles'],
-};
-</script>

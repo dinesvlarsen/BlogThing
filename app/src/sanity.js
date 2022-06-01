@@ -1,5 +1,5 @@
 import sanityClient from '@sanity/client';
-const SANITY_READ_AND_CREATE_NETLIFY = import.meta.env.VITE_SANITY_KEY
+const SANITY_READ_AND_CREATE_NETLIFY = import.meta.env.VITE_SANITY_KEY //env key from netlify
 
 export default sanityClient({
 	projectId: '4u8ecpnw',

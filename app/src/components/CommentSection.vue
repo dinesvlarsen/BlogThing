@@ -5,7 +5,7 @@
 			<h4 class="comments-section__heading">
 				Comments<span class="comments-section__count">{{ commentsCount }}</span>
 			</h4>
-			<button @click="deleteComments">Delete ALL comments</button>
+
 			<div v-if="comments.length === 0" class="comment__no-comments">
 				<p class="comments--secondary comments--bold">No comments...</p>
 			</div>
@@ -21,39 +21,35 @@
 							v-if="getFlag(comment.country, 'countryName') === 'No Country'"
 							class="comment__country-name"
 						>
-							No Country</span
-						>
+							🥷🏽
+						</span>
+
 						<span
 							v-else
 							class="comment__country-flag"
 							:aria-label="comment.country"
 							>{{ getFlag(comment.country, 'flag') }}</span
 						>
+
 						<span class="comment__country-name">
 							{{ getFlag(comment.country, 'countryName') }}</span
 						>
 					</div>
+
 					<h4 class="comment__name" aria-label="Comment name">
 						{{ comment.name }}
 						<span class="comment__name--secondary"
 							>wrote - {{ formatDate(comment._createdAt) }}</span
 						>
 					</h4>
+
 					<p class="comment__text" aria-label="Comment text">
 						{{ comment.text }}
 					</p>
 				</div>
-				<!-- <span class="accent-hover">
-					<button
-						v-if="!noMoreComments"
-						class="comment__button arrow--animation-parent"
-						@click="showMoreComments"
-					>
-						Show more <span class="arrow--animation-child">-> </span>
-					</button>
-				</span> -->
 
 				<Button
+					class="comments__show-more"
 					v-if="!noMoreComments"
 					@click="showMoreComments"
 					:buttonText="'SHOW MORE'"
@@ -78,6 +74,7 @@
 					v-model="form.textArea"
 					required
 				></textarea>
+
 				<label class="form__name-label" for="name">Name *</label>
 				<input
 					id="name"
@@ -88,20 +85,122 @@
 					required
 					:disabled="form.submitted"
 				/>
-				<span class="accent-hover">
-					<button
-						class="form__button arrow--animation-parent"
-						type="submit"
-						:disabled="form.submitted"
-					>
-						Submit
-						<span class="arrow--animation-child">-></span>
-					</button>
-				</span>
+				<Button
+					class="form__button arrow--animation-parent"
+					:buttonText="'SUBMIT'"
+				/>
 			</form>
 		</div>
 	</section>
 </template>
+
+<script>
+import sanity from './../sanity.js';
+
+import Button from './Button.vue';
+
+export default {
+	components: { Button },
+	props: ['id', 'restCountries', 'countryCode', 'comments', 'queryForComments'],
+
+	created() {
+		this.formatDate();
+	},
+
+	data() {
+		return {
+			form: {
+				name: '',
+				textArea: '',
+				submitted: false,
+			},
+			limit: 3,
+			loading: true,
+		};
+	},
+
+	methods: {
+		// Change the way dates are formatted.
+		formatDate(date) {
+			const options = {
+				month: 'long',
+				day: 'numeric',
+				year: 'numeric',
+				hour: 'numeric',
+				hourCycle: 'h24',
+				minute: 'numeric',
+			};
+
+			const dateConvert = new Date(date);
+			const newDate = dateConvert.toLocaleString('en-US', options);
+
+			return setCharAt(newDate, newDate.lastIndexOf(','), '');
+
+			// Found this method on https://stackoverflow.com/questions/1431094/how-do-i-replace-a-character-at-a-particular-index-in-javascript since there is no replaceAt() function.
+			//This function works even tho it is underneath where it is called because it is a function declaration.
+			function setCharAt(str, index, chr) {
+				if (index > str.length - 1) return str;
+				return str.substring(0, index) + chr + str.substring(index + 1);
+			}
+		},
+		async submitComment() {
+			this.form.submitted = true;
+			await this.createComment(this.form);
+
+			this.form.name = '';
+			this.form.textArea = '';
+			await this.queryForComments(this.$route.params.projectSlug);
+			this.form.submitted = false;
+		},
+
+		async createComment() {
+			await sanity.create({
+				_type: 'comment',
+				name: this.form.name,
+				text: this.form.textArea,
+				country: this.countryCode,
+				post: {
+					_type: 'reference',
+					_ref: this.id,
+				},
+			});
+		},
+
+		//Takes inn the countryCode and a 'string' specifying whether you want 'flag' or 'countryName'
+		getFlag(countryCode, option) {
+			const countryObject = this.restCountries.find((object) => {
+				return object.cca2 === countryCode;
+			});
+			if (!countryObject) return `No Country`;
+			if (option === 'flag') return countryObject.flag;
+			if (option === 'countryName') return countryObject.name.common;
+
+			return countryObject.flag;
+		},
+
+		//Increases the property used to determine how many comments are displayed.
+		showMoreComments() {
+			this.limit += 3;
+		},
+	},
+
+	computed: {
+		//Used to calculate how many comments are going to be shown. Solution found here: https://stackoverflow.com/questions/46622209/how-to-limit-iteration-of-elements-in-v-for
+		computedList() {
+			return this.limit ? this.comments.slice(0, this.limit) : this.object;
+		},
+
+		//Used to check if there are no comments on the page, so the proper message can be displayed.
+		noMoreComments() {
+			return this.comments.length <= this.limit;
+		},
+
+		commentsCount() {
+			return this.comments.length;
+		},
+	},
+};
+</script>
 
 <style>
 /* Comments section */
@@ -125,6 +224,11 @@
 	left: 4px;
 	font-size: var(--24px);
 	color: var(--comments-secondary);
+}
+
+.comments__show-more {
+	display: inline-block;
+	margin-bottom: var(--96px);
 }
 
 .comment:last-child {
@@ -348,124 +452,3 @@ textarea:focus {
 	}
 }
 </style>
-
-<script>
-import sanity from './../sanity.js';
-
-import Button from './Button.vue';
-
-export default {
-	components: { Button },
-	props: ['id', 'restCountries', 'countryCode', 'comments', 'queryForComments'],
-
-	created() {
-		this.formatDate();
-	},
-
-	data() {
-		return {
-			form: {
-				name: '',
-				textArea: '',
-				submitted: false,
-			},
-			limit: 3,
-			loading: true,
-		};
-	},
-
-	methods: {
-		async deleteComments() {
-			await sanity
-				.delete({
-					query: '*[_type == "comment"]',
-				})
-				.then(() => {
-					console.log('Documents matching *[_type == "comment"] was deleted');
-				})
-				.catch((err) => {
-					console.error('delete failed: ', err.message);
-				});
-		},
-
-		formatDate(date) {
-			const options = {
-				month: 'long',
-				day: 'numeric',
-				year: 'numeric',
-				hour: 'numeric',
-				hourCycle: 'h24',
-				minute: 'numeric',
-			};
-
-			const dateConvert = new Date(date);
-			const newDate = dateConvert.toLocaleString('en-US', options);
-
-			return setCharAt(newDate, newDate.lastIndexOf(','), '');
-
-			// Found this method on https://stackoverflow.com/questions/1431094/how-do-i-replace-a-character-at-a-particular-index-in-javascript since there is no replaceAt() function.
-			//This function works even tho it is underneath where it is called because it is a function declaration.
-			function setCharAt(str, index, chr) {
-				if (index > str.length - 1) return str;
-				return str.substring(0, index) + chr + str.substring(index + 1);
-			}
-		},
-
-		async submitComment() {
-			this.form.submitted = true;
-			await this.createComment(this.form);
-
-			this.form.name = '';
-			this.form.textArea = '';
-			await this.queryForComments(this.$route.params.projectSlug);
-			this.form.submitted = false;
-		},
-
-		async createComment() {
-			await sanity.create({
-				_type: 'comment',
-				name: this.form.name,
-				text: this.form.textArea,
-				country: this.countryCode,
-				post: {
-					_type: 'reference',
-					_ref: this.id,
-				},
-			});
-		},
-
-		//Takes inn the countryCode and a 'string' specifying whether you want 'flag' or 'countryName'
-		getFlag(countryCode, option) {
-			const countryObject = this.restCountries.find((object) => {
-				return object.cca2 === countryCode;
-			});
-			if (!countryObject) return `No Country`;
-			if (option === 'flag') return countryObject.flag;
-			if (option === 'countryName') return countryObject.name.common;
-
-			return countryObject.flag;
-		},
-
-		//Increases the property used to determine how many comments are displayed.
-		showMoreComments() {
-			this.limit += 3;
-		},
-	},
-
-	computed: {
-		//Used to calculate how many comments are going to be shown. Solution found here: https://stackoverflow.com/questions/46622209/how-to-limit-iteration-of-elements-in-v-for
-		computedList() {
-			return this.limit ? this.comments.slice(0, this.limit) : this.object;
-		},
-
-		//Used to check if there are no comments on the page, so the proper message can be displayed.
-		noMoreComments() {
-			return this.comments.length <= this.limit;
-		},
-
-		commentsCount() {
-			return this.comments.length;
-		},
-	},
-};
-</script>
