@@ -70,8 +70,9 @@
 			</p>
 
 			<form class="form" id="form" @submit.prevent="submitComment">
-				<label class="form__textarea-label" for="text">Message *</label>
+				<label class="form__textarea-label" for="textarea">Message *</label>
 				<textarea
+					id="textarea"
 					class="form__textarea"
 					name="text"
 					v-model="form.textArea"
@@ -79,6 +80,7 @@
 				></textarea>
 				<label class="form__name-label" for="name">Name *</label>
 				<input
+					id="name"
 					class="form__name"
 					type="text"
 					name="name"
@@ -220,6 +222,7 @@ textarea:focus {
 	font-size: var(--14px);
 	padding: var(--8px);
 	border-radius: 2px;
+	border: 1px solid var(--comments-background);
 }
 
 .form__textarea {
@@ -419,6 +422,8 @@ export default {
 		},
 
 		async createComment() {
+			const TEST = import.meta.env.VITE_SANITY_KEY;
+			console.log(TEST);
 			await sanity.create({
 				_type: 'comment',
 				name: this.form.name,

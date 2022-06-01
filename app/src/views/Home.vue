@@ -1,10 +1,18 @@
 <template>
 	<Loading v-if="loading" />
 
-	<main v-else="loading" class="home" v-for="post in result">
+	<article v-else="loading" class="home" v-for="(post, index) in result">
 		<div class="home__left">
 			<RouterLink :to="post.slug.current">
-				<img
+				<!-- <img :src="this.smallImage(this.imageURL(post))" alt="" /> -->
+				<!-- <img
+					class="home__image"
+					:src="this.imageURL(post)"
+					:alt="post.coverImage.alt"
+					:loading="index > 3 ? 'lazy' : 'auto'"
+				/> -->
+
+				<Image
 					class="home__image"
 					:src="this.imageURL(post)"
 					:alt="post.coverImage.alt"
@@ -25,7 +33,7 @@
 
 			<Button :slug="post.slug.current" />
 		</div>
-	</main>
+	</article>
 </template>
 
 <style>
@@ -106,9 +114,10 @@ import query from '../groq/home.groq?raw';
 import viewMixin from '../mixins/viewMixin.js';
 import Loading from '../components/Loading.vue';
 import Button from '../components/Button.vue';
+import Image from '../components/Image.vue';
 
 export default {
-	components: { Loading, Button },
+	components: { Loading, Button, Image },
 	mixins: [viewMixin],
 
 	async created() {
@@ -144,5 +153,7 @@ export default {
 			return post.coverImage.image.asset.url;
 		},
 	},
+
+	computed: {},
 };
 </script>
