@@ -156,15 +156,19 @@ export default {
 		},
 
 		async userCountry() {
-			//Netlify
+			//Netlify env variable
 			const IP_INFO_KEY_NETLIFY = import.meta.env.VITE_IP_INFO_KEY;
-			const response = await fetch(
-				`https://ipinfo.io/json?token=${IP_INFO_KEY_NETLIFY}`
-			).catch((error) => console.error('failed to fetch ipinfo: ', error));
-			const data = await response.json();
-			const countryCode = data.country;
+			try {
+				const response = await fetch(
+					`https://ipinfo.io/json?token=${IP_INFO_KEY_NETLIFY}`
+				);
+				const data = await response.json();
+				const countryCode = data.country;
 
-			this.countryCode = countryCode;
+				this.countryCode = countryCode;
+			} catch (error) {
+				console.error('failed to fetch ipinfo: ', error);
+			}
 		},
 	},
 
