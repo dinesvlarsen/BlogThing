@@ -167,7 +167,10 @@ export default {
 
 				this.countryCode = countryCode;
 			} catch (error) {
-				console.error('failed to fetch ipinfo: ', error);
+				console.error('failed to fetch ipinfo: ', error.text);
+				console.error(
+					' This might be caused by adblock, comments will not have flag or country name.'
+				);
 			}
 		},
 	},
